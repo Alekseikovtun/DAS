@@ -11,8 +11,8 @@ def read_data_for_new_task(filepath):
 def add_new_row_to_csv(filepath):
     with open(filepath, 'a', newline='') as csv_file:
         writer = csv.writer(csv_file)
-        latitude = input('Введите координаты широты: ')
-        longitude = input('Введите координаты долготы: ')
+        latitude = input('Enter the latitude coordinates: ')
+        longitude = input('Enter the longitude coordinates: ')
         str_with_coordinates = [latitude, longitude]
         writer.writerow(str_with_coordinates)
 
