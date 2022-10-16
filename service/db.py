@@ -20,9 +20,8 @@ def read_data_for_new_task():
 
 
 def add_coordinate_to_db(add_latitude, add_longitude):
-    last_coord = session.query(Task, func.max(Task.id)).group_by(Task.id)
-    last_id = last_coord.all()[-1][1]
-    new_coord = Task(id=last_id+1, latitude=add_latitude, longitude=add_longitude, task_status_id=1)
+    last_coord = session.query(func.max(Task.id)).scalar()
+    new_coord = Task(id=last_coord+1, latitude=add_latitude, longitude=add_longitude, task_status_id=1)
     session.add_all([new_coord])
     session.commit()
     print('\n Data entered \n')
