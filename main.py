@@ -5,7 +5,7 @@ if __name__ == '__main__':
         txt = input('Enter or a or e: ')
         try:
             if txt == '':
-                # read next coord from db
+                db.read_data_for_new_task()
                 pass
         except StopIteration:
             # End-of-file error handler
