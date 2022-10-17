@@ -8,8 +8,9 @@ from config import db_config
 from models.drone import DroneStatus
 from models.station import Task
 
-db = f'postgresql://{db_config.POSTGRES_USER}:{db_config.POSTGRES_PASSWORD}\
-    @localhost:{db_config.POSTGRES_OUT_PORT}/postgres'
+db = f"""{db_config.DB_TYPE}://\
+{db_config.POSTGRES_USER}:{db_config.POSTGRES_PASSWORD}\
+@localhost:{db_config.POSTGRES_OUT_PORT}/postgres"""
 engine = sa.create_engine(db)
 Session = sessionmaker(bind=engine)
 connection = engine.connect()
