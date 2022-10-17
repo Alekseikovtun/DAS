@@ -1,4 +1,7 @@
+from datetime import datetime
+
 import sqlalchemy as sa
+from sqlalchemy import func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -7,8 +10,6 @@ Base = declarative_base()
 
 class TaskStatus(Base):
     __tablename__ = 'task_status'
-    # created_at = sa.Column()
-    # updated_at = sa.Column()
     id = sa.Column(sa.Integer, primary_key=True)
     status = sa.Column(sa.String(20))
 
@@ -17,8 +18,12 @@ class TaskStatus(Base):
 
 class Task(Base):
     __tablename__ = 'task'
-    # created_at = sa.Column()
-    # updated_at = sa.Column()
+    created_at = sa.Column(sa.TIMESTAMP(timezone=True), default=func.now())
+    updated_at: datetime = sa.Column(
+        sa.TIMESTAMP(timezone=True),
+        default=func.now(),
+        onupdate=func.now()
+    )
     id = sa.Column(sa.Integer, primary_key=True)
     latitude = sa.Column(sa.Float)
     longitude = sa.Column(sa.Float)
