@@ -973,13 +973,3 @@ DB/pg_subtrans/0000
 DB/pg_wal/000000010000000000000001
 DB/pg_xact/0000
 DB/pg_stat/pgstat.stat
-config/db_config.py
-config/db_config.py
-config/db_config.py
-config/db_config.py
-config/db_config.py
-config/__pycache__/db_config.cpython-38.pyc
-config/db_config.py
-config/db_config.py
-config/db_config.py
-config/__pycache__/db_config.cpython-38.pyc
