@@ -30,9 +30,9 @@ def read_data_for_new_task() -> Dict[str, Any]:
 
 
 def add_coordinate_to_db(add_latitude, add_longitude):
-    last_coord = session.query(func.max(Task.id)).scalar()
+    last_coord_id = session.query(func.max(Task.id)).scalar()
     new_coord = Task(
-        id=last_coord+1,
+        id=last_coord_id+1,
         latitude=add_latitude,
         longitude=add_longitude,
         task_status_id=1
@@ -43,16 +43,19 @@ def add_coordinate_to_db(add_latitude, add_longitude):
 
 
 def add_dron_status(drone_id, battery, departure_lat, departure_long):
+    new_info = DroneStatus(
+        id=drone_id,
+        battery_charge_lvl=battery,
+        departure_latitude=departure_lat,
+        departure_longitude=departure_long
+    )
+    session.add_all([new_info])
+    session.commit()
+    print('\n Information about the drone has been received \n')
+
+
+def update_task_info(departure_lat, departure_long):
     try:
-        new_info = DroneStatus(
-            id=drone_id,
-            battery_charge_lvl=battery,
-            departure_latitude=departure_lat,
-            departure_longitude=departure_long
-        )
-        session.add_all([new_info])
-        session.commit()
-        print('\n Information about the drone has been received \n')
         task_status_update = session.query(Task).filter(
             Task.latitude == departure_lat,
             Task.longitude == departure_long

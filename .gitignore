@@ -981,3 +981,5 @@ config/db_config.py
 config/__pycache__/db_config.cpython-38.pyc
 config/db_config.py
 config/db_config.py
+config/db_config.py
+config/__pycache__/db_config.cpython-38.pyc

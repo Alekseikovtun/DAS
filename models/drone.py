@@ -1,6 +1,7 @@
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 
+"""from models.db_base_class import BaseModel"""
 Base = declarative_base()
 
 

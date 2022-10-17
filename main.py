@@ -16,5 +16,6 @@ if __name__ == '__main__':
             d_latitude = input('Enter the departure latitude coordinate: ')
             d_longitude = input('Enter the departure longitude coordinate: ')
             db.add_dron_status(drone_id, battery, d_latitude, d_longitude)
+            db.update_task_info(d_latitude, d_longitude)
         if txt == 'e':
             break
