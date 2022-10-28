@@ -2,10 +2,7 @@ from datetime import datetime
 
 import sqlalchemy as sa
 from sqlalchemy import func
-from sqlalchemy.ext.declarative import declarative_base
-
-"""from models.db_base_class import BaseModel"""
-Base = declarative_base()
+from models.base import Base
 
 
 class DroneStatus(Base):

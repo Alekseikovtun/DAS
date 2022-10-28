@@ -2,10 +2,8 @@ from datetime import datetime
 
 import sqlalchemy as sa
 from sqlalchemy import func
-from sqlalchemy.ext.declarative import declarative_base
+from models.base import Base
 from sqlalchemy.orm import relationship
-
-Base = declarative_base()
 
 
 class TaskStatus(Base):
