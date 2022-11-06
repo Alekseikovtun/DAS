@@ -993,3 +993,16 @@ models/__pycache__/base.cpython-38.pyc
 models/__pycache__/drone.cpython-38.pyc
 models/__pycache__/station.cpython-38.pyc
 service/__pycache__/db.cpython-38.pyc
+config/__pycache__/__init__.cpython-38.pyc
+config/__pycache__/db_config.cpython-38.pyc
+migrations/versions/__pycache__/29df5476034c_add_priority.cpython-38.pyc
+migrations/versions/__pycache__/f2180d7f80db_add_priority_again.cpython-38.pyc
+models/__pycache__/__init__.cpython-38.pyc
+models/__pycache__/drone.cpython-38.pyc
+models/__pycache__/station.cpython-38.pyc
+schema/__pycache__/__init__.cpython-38.pyc
+schema/__pycache__/admin_schema.cpython-38.pyc
+schema/__pycache__/base_schema.cpython-38.pyc
+schema/__pycache__/drone_schema.cpython-38.pyc
+service/__pycache__/__init__.cpython-38.pyc
+service/__pycache__/db.cpython-38.pyc

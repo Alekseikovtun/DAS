@@ -7,6 +7,8 @@ from sqlalchemy.orm import sessionmaker
 from config import db_config
 from models.drone import DroneStatus
 from models.station import Task
+from schema.admin_schema import AdminSchema
+from schema.drone_schema import DroneSchema
 
 db = f"""postgresql://\
 {db_config.POSTGRES_USER}:{db_config.POSTGRES_PASSWORD}\
@@ -17,25 +19,26 @@ connection = engine.connect()
 session = Session()
 
 
-def read_data_for_new_task() -> Dict[str, Any]:
+def read_data_for_new_task(user) -> Dict[str, Any]:
     next_task = session.query(func.min(Task.id)).filter(
         Task.task_status_id == 1
     ).scalar()
     next: Task = session.query(Task).filter(Task.id == next_task).all()[0]
-    result = {
-        'latitude': next.latitude,
-        'longitude': next.longitude
-    }
+    if user == 'admin':
+        result = AdminSchema.from_orm(next)
+    if user == 'drone':
+        result = DroneSchema.from_orm(next)
     return result
 
 
-def add_coordinate_to_db(add_latitude, add_longitude):
+def add_task_to_db(add_latitude, add_longitude, add_priority):
     last_coord_id = session.query(func.max(Task.id)).scalar()
     new_coord = Task(
         id=last_coord_id+1,
         latitude=add_latitude,
         longitude=add_longitude,
-        task_status_id=1
+        task_status_id=1,
+        priority=add_priority
     )
     session.add_all([new_coord])
     session.commit()

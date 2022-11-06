@@ -4,12 +4,14 @@ if __name__ == '__main__':
     while True:
         txt = input('Enter or a or s or e: ')
         if txt == '':
-            gps = db.read_data_for_new_task()
-            print(gps)
+            user = input('Enter the user who should receive the information: ')
+            task = db.read_data_for_new_task(user)
+            print(task)
         if txt == 'a':
             latitude = input('Enter the latitude coordinate: ')
             longitude = input('Enter the longitude coordinate: ')
-            db.add_coordinate_to_db(latitude, longitude)
+            priority = input('Enter the priority: ')
+            db.add_task_to_db(latitude, longitude, priority)
         if txt == 's':
             drone_id = input('Enter the drone id: ')
             battery = input('Enter the battery level: ')

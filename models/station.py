@@ -26,5 +26,6 @@ class Task(Base):
     id = Column(Integer, primary_key=True)
     latitude = Column(Float)
     longitude = Column(Float)
+    priority = Column(String(20))
 
     task_status_id = Column(Integer, ForeignKey('task_status.id'))
