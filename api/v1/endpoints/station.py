@@ -5,15 +5,19 @@ router = APIRouter()
 
 
 @router.get('/new_task/')
-def read_data_for_new_task():
-    gps = db.read_data_for_new_task()
-    return str(gps)
+def read_data_for_new_task(
+    user: str
+):
+    task = db.read_data_for_new_task(user)
+    return task
 
 
 @router.get('/add_coord')
-def add_coordinate_to_db(
+def add_task_to_db(
+    user: str,
     latitude: float,
-    longitude: float
+    longitude: float,
+    priority: str
 ):
-    db.add_coordinate_to_db(latitude, longitude)
-    return str('Done')
+    result = db.add_task_to_db(user, latitude, longitude, priority)
+    return result

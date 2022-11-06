@@ -1006,3 +1006,11 @@ schema/__pycache__/base_schema.cpython-38.pyc
 schema/__pycache__/drone_schema.cpython-38.pyc
 service/__pycache__/__init__.cpython-38.pyc
 service/__pycache__/db.cpython-38.pyc
+models/__pycache__/drone.cpython-38.pyc
+models/__pycache__/station.cpython-38.pyc
+schemas/__pycache__/__init__.cpython-38.pyc
+schemas/__pycache__/admin_schema.cpython-38.pyc
+schemas/__pycache__/base_schema.cpython-38.pyc
+schemas/__pycache__/drone_schema.cpython-38.pyc
+schemas/__pycache__/drone_task_schema.cpython-38.pyc
+service/__pycache__/db.cpython-38.pyc
