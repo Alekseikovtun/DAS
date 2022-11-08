@@ -11,11 +11,11 @@ class DroneTaskBase(BaseModel):
         orm_mode = True
 
 
-class TaskToDrone(DroneTaskBase):
+class DroneTaskToDrone(DroneTaskBase):
     id: int
 
 
-class TaskToAdmin(TaskToDrone):
+class DroneTaskToAdmin(DroneTaskToDrone):
     priority: Optional[str]
     task_status_id: int
     created_at: datetime
