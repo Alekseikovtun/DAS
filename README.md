@@ -11,4 +11,3 @@
 - In DB_NAME write the DB name
 6. Install **Docker Desktop**
 7. Run the command <**docker compose -f (the path to the file docker-compose.yml) up**>
-8. Run the command <**uvicorn entry:app --reload --port 8080**>
