@@ -7,4 +7,6 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-CMD [ "python", "./entry.py" ]
+EXPOSE 8080
+
+CMD ["uvicorn", "entry:app", "--host", "das", "--port", "8080"]
