@@ -1021,3 +1021,4 @@ migrations/versions/__pycache__/f64dee634bc8_.cpython-38.pyc
 migrations/versions/__pycache__/fc1efb8f0865_123.cpython-38.pyc
 schemas/__pycache__/station_schema.cpython-38.pyc
 service/__pycache__/db.cpython-38.pyc
+config/__pycache__/db_config.cpython-38.pyc
