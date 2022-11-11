@@ -1,6 +1,7 @@
 version: '3.9'
 
 services:
+
   database:
     container_name: postgres
     image: postgres:15
@@ -13,3 +14,13 @@ services:
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
       - ./artifacts/db:/var/lib/postgresql/data/pgdata
+
+  das:
+    build: .
+    depends_on:
+      - database
+    container_name: das
+    ports:
+      - 8080:8080
+    environment:
+      DB_CONNECTION: database

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import func, Column, TIMESTAMP, Integer
+from sqlalchemy import func, Column, TIMESTAMP, Integer, Float
 from models.base import Base
 
 
@@ -14,5 +14,5 @@ class DroneStatus(Base):
     )
     id = Column(Integer, primary_key=True)
     battery_charge_lvl = Column(Integer)
-    departure_latitude = Column(Integer)
-    departure_longitude = Column(Integer)
+    departure_latitude = Column(Float)
+    departure_longitude = Column(Float)
