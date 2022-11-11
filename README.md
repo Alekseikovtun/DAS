@@ -1,5 +1,5 @@
 # Installation Guide
-1. Clone a repository using the <**git clone https://github.com/Alekseikovtun.git**> command
+1. Clone a repository using the <**git clone https://github.com/Alekseikovtun/DAS.git -b stage**> command
 2. Create a virtual environment
 3. Use the <**pip install -r .\requirements.txt**> command
 4. Create a <**.env**> file in the root of the project
