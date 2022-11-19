@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from service import db
 from schemas.station_schema import TaskBase
+from schemas.station_task_schema import Task
 
 router = APIRouter()
 
@@ -13,11 +14,7 @@ def read_data_for_new_task() -> TaskBase:
 
 
 @router.post('/add_coord', response_model=TaskBase)
-def add_task_to_db(
-    latitude: float,
-    longitude: float,
-    priority: str
-) -> TaskBase:
-    new_task = db.add_task_to_db(latitude, longitude, priority)
+def add_task_to_db(task: Task) -> TaskBase:
+    new_task = db.add_task_to_db(task.latitude, task.longitude, task.priority)
     result: TaskBase = TaskBase.from_orm(new_task)
     return result
