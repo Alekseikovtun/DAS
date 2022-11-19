@@ -1022,3 +1022,11 @@ migrations/versions/__pycache__/fc1efb8f0865_123.cpython-38.pyc
 schemas/__pycache__/station_schema.cpython-38.pyc
 service/__pycache__/db.cpython-38.pyc
 config/__pycache__/db_config.cpython-38.pyc
+config/__pycache__/db_config.cpython-38.pyc
+models/__pycache__/drone.cpython-38.pyc
+models/__pycache__/station.cpython-38.pyc
+schemas/__pycache__/station_task_schema.cpython-38.pyc
+service/__pycache__/db.cpython-38.pyc
+tests/__pycache__/__init__.cpython-38.pyc
+tests/api/__pycache__/__init__.cpython-38.pyc
+tests/api/__pycache__/test_drone.cpython-38-pytest-7.2.0.pyc
