@@ -16,7 +16,7 @@ connection = engine.connect()
 session = Session()
 
 
-def read_data_for_new_task() -> Task:
+async def read_data_for_new_task() -> Task:
     resp = session.query(func.min(Task.id)).filter(
         Task.task_status_id == 1
     ).scalar()
@@ -24,7 +24,7 @@ def read_data_for_new_task() -> Task:
     return next_task
 
 
-def add_task_to_db(add_latitude, add_longitude, add_priority) -> Task:
+async def add_task_to_db(add_latitude, add_longitude, add_priority) -> Task:
     last_coord_id = session.query(func.max(Task.id)).scalar()
     new_coord = Task(
         id=last_coord_id+1,
@@ -38,7 +38,7 @@ def add_task_to_db(add_latitude, add_longitude, add_priority) -> Task:
     return new_coord
 
 
-def add_dron_status(drone_id, battery, departure_lat, departure_long):
+async def add_dron_status(drone_id, battery, departure_lat, departure_long):
     new_info = DroneStatus(
         id=drone_id,
         battery_charge_lvl=battery,
@@ -49,7 +49,7 @@ def add_dron_status(drone_id, battery, departure_lat, departure_long):
     session.commit()
 
 
-def update_task_info(departure_lat, departure_long) -> Task:
+async def update_task_info(departure_lat, departure_long) -> Task:
     task_status_update = session.query(Task).filter(
         Task.latitude == departure_lat,
         Task.longitude == departure_long
