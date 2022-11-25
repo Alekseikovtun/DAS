@@ -1030,3 +1030,4 @@ service/__pycache__/db.cpython-38.pyc
 tests/__pycache__/__init__.cpython-38.pyc
 tests/api/__pycache__/__init__.cpython-38.pyc
 tests/api/__pycache__/test_drone.cpython-38-pytest-7.2.0.pyc
+config/__pycache__/db_config.cpython-38.pyc
