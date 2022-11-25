@@ -1040,3 +1040,4 @@ crud/__pycache__/drone.cpython-38.pyc
 crud/__pycache__/station.cpython-38.pyc
 models/__pycache__/drone.cpython-38.pyc
 models/__pycache__/station.cpython-38.pyc
+config/__pycache__/db_config.cpython-38.pyc
