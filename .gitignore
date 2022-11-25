@@ -1031,3 +1031,12 @@ tests/__pycache__/__init__.cpython-38.pyc
 tests/api/__pycache__/__init__.cpython-38.pyc
 tests/api/__pycache__/test_drone.cpython-38-pytest-7.2.0.pyc
 config/__pycache__/db_config.cpython-38.pyc
+config/__pycache__/db_config.cpython-38.pyc
+crud/__pycache__/__init__.cpython-38.pyc
+crud/__pycache__/crud_drone.cpython-38.pyc
+crud/__pycache__/crud_session.cpython-38.pyc
+crud/__pycache__/crud_station.cpython-38.pyc
+crud/__pycache__/drone.cpython-38.pyc
+crud/__pycache__/station.cpython-38.pyc
+models/__pycache__/drone.cpython-38.pyc
+models/__pycache__/station.cpython-38.pyc
