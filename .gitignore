@@ -973,7 +973,6 @@ DB/pg_subtrans/0000
 DB/pg_wal/000000010000000000000001
 DB/pg_xact/0000
 DB/pg_stat/pgstat.stat
-alembic.ini
 __pycache__/entry.cpython-38.pyc
 api/__pycache__/__init__.cpython-38.pyc
 api/v1/__pycache__/__init__.cpython-38.pyc
@@ -1041,3 +1040,4 @@ crud/__pycache__/station.cpython-38.pyc
 models/__pycache__/drone.cpython-38.pyc
 models/__pycache__/station.cpython-38.pyc
 config/__pycache__/db_config.cpython-38.pyc
+alembic.ini
