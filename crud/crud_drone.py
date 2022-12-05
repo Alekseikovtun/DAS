@@ -11,6 +11,6 @@ class Drone():
             departure_longitude=departure_long
         )
         db.add_all([new_info])
-        db.commit()
+        # db.commit()
 
 drone = Drone()

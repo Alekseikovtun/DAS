@@ -11,6 +11,6 @@
 - In DB_NAME write the DB name
 6. Install **Docker Desktop**
 7. In alembic.ini.template delete the '.template' part
-8. Open the alemib.ini file and fill in the line 57 sqlalchemy.url, replacing the capslock with the values from the .env file
-9. Run the command <**docker compose -f (the path to the file docker-compose.yml) up**>
-10. Run the command <**alembic upgrade heads**>
+8. Open the alemib.ini file and fill in the line 58 sqlalchemy.url, replacing the capslock with the values from the .env file
+9. Run the command <**docker compose -f (the path to the file docker-compose.yml) up**> via PowerShell or terminal
+10. Run the command <**alembic upgrade heads**> via terminal
