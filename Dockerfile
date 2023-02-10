@@ -5,9 +5,10 @@ WORKDIR /src
 
 COPY . .
 
+RUN rm -f ./.env
+RUN rm -f ./alembic.ini
 RUN pip install -r requirements.txt
 
 EXPOSE 8080
 
-CMD ["uvicorn", "entry:app", "--host", "das", "--port", "8080"]
-# CMD ["/bin/bash", "-c", "echo alembic upgrade heads; echo uvicorn entry:app --host das --port 8080"]
+CMD ["python", "migrations.py", "migrate", "&&", "uvicorn", "entry:app", "--host", "das", "--port", "8080"]
