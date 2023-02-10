@@ -6,7 +6,6 @@ WORKDIR /src
 COPY . .
 
 RUN rm -f ./.env
-RUN rm -f ./alembic.ini
 RUN pip install -r requirements.txt
 
 EXPOSE 8080
