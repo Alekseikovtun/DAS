@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 8080
 
-CMD ["python", "migrations.py", "migrate", "&&", "uvicorn", "entry:app", "--host", "das", "--port", "8080"]
+CMD ["/bin/bash","-c","python migrations.py migrate && uvicorn entry:app --host das --port 8080"]

@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 
-connection_string = f"""mysql+asyncpg://\
+connection_string = f"""mysql+asyncmy://\
 {db_config.DB_USER}:{db_config.DB_PASSWORD}\
 @{db_config.DB_HOST}:{db_config.DB_OUT_PORT}/{db_config.DB_NAME}"""
 
