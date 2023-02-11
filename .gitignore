@@ -1042,3 +1042,5 @@ models/__pycache__/station.cpython-38.pyc
 config/__pycache__/db_config.cpython-38.pyc
 /__pycache__
 /__pycache__/*.pyc
+config/__pycache__/*.pyc
+migrations/versions/__pycache__/*.*
