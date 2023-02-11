@@ -15,11 +15,17 @@ services:
       #DB_DATA: "/var/lib/mysql"
     volumes:
       - ${DB_DATA}:/var/lib/msql
+    healthcheck:
+      test: mysqladmin ping -h localhost -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   das:
     image: alekseikovtun/das:latest
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     container_name: das
     ports:
       - 8080:8080
@@ -33,3 +39,4 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_HOST: database

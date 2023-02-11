@@ -28,12 +28,12 @@ def create_migrations(message: Optional[str] = typer.Argument("new migrations"))
     import alembic.config
     alembicArgs = [
         '--raiseerr',
-        'revision', '--autogenerate', "-m",
+        'revision', '--autogenerate', "-m", message,
     ]
     alembic.config.main(argv=alembicArgs)
 
 
 if __name__ == "__main__":
-    migrate()
-    create_migrations()
-    # app()
+    # migrate()
+    # create_migrations()
+    app()
