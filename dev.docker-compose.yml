@@ -16,12 +16,12 @@ services:
     volumes:
       - ${DB_DATA}:/var/lib/msql
 
-  das:
-    build: .
-    depends_on:
-      - database
-    container_name: das
-    ports:
-      - 8080:8080
-    environment:
-      DB_HOST: database
+  # das:
+  #   build: .
+  #   depends_on:
+  #     - database
+  #   container_name: das
+  #   ports:
+  #     - 8080:8080
+  #   environment:
+  #     DB_HOST: database
