@@ -15,7 +15,4 @@ class Settings(BaseSettings):
     MYSQL_OUT_PORT: int = DB_OUT_PORT
     MYSQL_HOST: str = DB_HOST
 
-print("1")
 settings = Settings()
-print(settings.dict())
-print("2")
