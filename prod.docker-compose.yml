@@ -40,3 +40,9 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_HOST: database
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8888:8080
