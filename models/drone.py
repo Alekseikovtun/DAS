@@ -1,18 +1,33 @@
-from datetime import datetime
-
-from sqlalchemy import func, Column, TIMESTAMP, Integer, Float
+from sqlalchemy import Column, Integer, Float, String
 from models.base import Base
 
 
-class DroneStatus(Base):
-    __tablename__ = 'drone_status'
-    created_at = Column(TIMESTAMP(timezone=True), default=func.now())
-    updated_at: datetime = Column(
-        TIMESTAMP(timezone=True),
-        default=func.now(),
-        onupdate=func.now()
-    )
+class Drone(Base):
+    __tablename__ = "drone"
+
     id = Column(Integer, primary_key=True)
-    battery_charge_lvl = Column(Integer)
-    departure_latitude = Column(Float)
-    departure_longitude = Column(Float)
+    access_key = Column(String)
+    status = Column(String)    
+    place_number = Column(Integer)
+
+class DroneType(Base):
+    __tablename__ = "drone_type"
+
+    id = Column(Integer, primary_key=True)
+    engine_power = Column(Float)
+    flight_range = Column(Float)
+    load_capacity = Column(Float) 
+    cargo_volume = Column(Float)
+    battery_capacity = Column(Float)
+
+class Logs(Base):
+    __tablename__ = "logs"
+
+    id = Column(Integer, primary_key=True)
+    log_content = Column(String)
+
+class Reason(Base):
+    __tablename__ = "reason"
+
+    name = Column(String, primary_key=True)
+    solution = Column(String)

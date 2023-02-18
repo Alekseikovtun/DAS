@@ -7,25 +7,35 @@ from models.base import Base
 from sqlalchemy.orm import relationship
 
 
-class TaskStatus(Base):
-    __tablename__ = 'task_status'
-    id = Column(Integer, primary_key=True)
-    status = Column(String(20))
-
-    tasks = relationship('Task', backref='task_status')
-
-
 class Task(Base):
-    __tablename__ = 'task'
+    __tablename__ = "task"
+
+    id = Column(Integer, primary_key=True)
     created_at = Column(TIMESTAMP(timezone=True), default=func.now())
     updated_at: datetime = Column(
         TIMESTAMP(timezone=True),
         default=func.now(),
         onupdate=func.now()
     )
-    id = Column(Integer, primary_key=True)
-    latitude = Column(Float)
-    longitude = Column(Float)
-    priority = Column(String(20))
+    delivery_latitude = Column(Float)
+    delivery_longitude = Column(Float)
+    priority = Column(String)
+    status = Column(String)
+    completed_at = Column(TIMESTAMP(timezone=True))
 
-    task_status_id = Column(Integer, ForeignKey('task_status.id'))
+class Cargo(Base):
+    __tablename__ = "cargo"
+
+    id = Column(Integer, primary_key=True)
+    weight = Column(Float)
+    volume = Column(Float)
+    name = Column(String)
+
+class Delivery(Base):
+    __tablename__ = "delivery"
+
+    id = Column(Integer, primary_key=True)
+    started_at = Column(TIMESTAMP(timezone=True))
+    flight_time = Column(Integer) #???
+    edt = Column(TIMESTAMP(timezone=True)) #estimated delivery time
+    deviation = Column(Float)
