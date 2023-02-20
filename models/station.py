@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import (
     func, Integer, String, TIMESTAMP, Column, Float, ForeignKey
     )
-from models.base import Base
+from config.base import Base
 from models.drone import Drone, DroneType
 from models.log import DroneLog
 from sqlalchemy.orm import relationship

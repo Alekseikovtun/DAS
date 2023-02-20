@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, TIMESTAMP, func, ForeignKey
-from models.base import Base
+from config.base import Base
 from models.drone import Drone
 from models.station import Alert
 from sqlalchemy.orm import relationship

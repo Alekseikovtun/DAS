@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, Float, String, ForeignKey
-from models.base import Base
+from config.base import Base
 from models.station import Task, Cargo
 from models.log import DroneLog
 from sqlalchemy.orm import relationship
