@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String, TIMESTAMP, func, ForeignKey
 from config.base import Base
-from models.drone import Drone
-from models.station import Alert
+from models.station import Alert, Task
 from sqlalchemy.orm import relationship
 
 
@@ -18,6 +17,6 @@ class DroneLog(Base):
     id = Column(Integer, primary_key=True)
     log_content = Column(String)
 
-    id_drone = Column(Integer, ForeignKey(Drone.id))
     alerts = relationship(Alert, uselist=False)
+    id_task = Column(Integer, ForeignKey(Task.id))
 

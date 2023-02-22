@@ -4,7 +4,8 @@ from sqlalchemy import (
     func, Integer, String, TIMESTAMP, Column, Float, ForeignKey
     )
 from config.base import Base
-from models.drone import Drone, DroneType
+from models.drone import Drone
+from models.station import Task
 from models.log import DroneLog
 from sqlalchemy.orm import relationship
 from enum import Enum
@@ -25,7 +26,6 @@ class Flight(Base):
     deviation = Column(Float)
 
     tasks = relationship('Task', backref='flight')
-    cargos = relationship('Cargo', backref='flight')
 
 class Cargo(Base):
     __tablename__ = "cargo"
@@ -36,8 +36,6 @@ class Cargo(Base):
     name = Column(String)
 
     tasks = relationship('Task', backref='cargo')
-    id_drone_type = Column(Integer, ForeignKey(DroneType.id))
-    id_flight = Column(Integer, ForeignKey(Flight))
 
 class Task(Base):
     __tablename__ = "task"
@@ -58,6 +56,7 @@ class Task(Base):
     id_drone = Column(Integer, ForeignKey(Drone.id))
     id_cargo = Column(Integer, ForeignKey(Cargo.id))
     id_flight = Column(Integer, ForeignKey(Flight.id))
+    logs = relationship(Task, backref='task')
 
 class Alert(Base):
     __tablename__ = "alert"

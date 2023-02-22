@@ -17,7 +17,6 @@ class DroneType(Base):
     battery_capacity = Column(Float)
 
     drones = relationship('Drone', backref='drone_type')
-    cargos = relationship(Cargo, backref='drone_type')
 
 class DroneStatus(str, Enum):
     FREE = "FREE"
@@ -34,4 +33,3 @@ class Drone(Base):
 
     id_drone_type = Column(Integer, ForeignKey(DroneType.id))
     tasks = relationship(Task, backref='drone')
-    logs = relationship(DroneLog, backref='drone')
