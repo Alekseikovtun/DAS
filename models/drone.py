@@ -1,18 +1,35 @@
-from datetime import datetime
+from sqlalchemy import Column, Integer, Float, String, ForeignKey
+from config.base import Base
+from models.station import Task, Cargo
+from models.log import DroneLog
+from sqlalchemy.orm import relationship
+from enum import Enum
 
-from sqlalchemy import func, Column, TIMESTAMP, Integer, Float
-from models.base import Base
 
+class DroneType(Base):
+    __tablename__ = "drone_type"
 
-class DroneStatus(Base):
-    __tablename__ = 'drone_status'
-    created_at = Column(TIMESTAMP(timezone=True), default=func.now())
-    updated_at: datetime = Column(
-        TIMESTAMP(timezone=True),
-        default=func.now(),
-        onupdate=func.now()
-    )
     id = Column(Integer, primary_key=True)
-    battery_charge_lvl = Column(Integer)
-    departure_latitude = Column(Float)
-    departure_longitude = Column(Float)
+    engine_power = Column(Float)
+    flight_range = Column(Float)
+    load_capacity = Column(Float) 
+    cargo_volume = Column(Float)
+    battery_capacity = Column(Float)
+
+    drones = relationship('Drone', backref='drone_type')
+
+class DroneStatus(str, Enum):
+    FREE = "FREE"
+    CHARGING = "CHARGING"
+    FLYING = "FLYING"
+
+class Drone(Base):
+    __tablename__ = "drone"
+
+    id = Column(Integer, primary_key=True)
+    access_key = Column(String)
+    drone_status: DroneStatus = Column(String, nullable=False) 
+    place_number = Column(Integer)
+
+    id_drone_type = Column(Integer, ForeignKey(DroneType.id))
+    tasks = relationship(Task, backref='drone')
