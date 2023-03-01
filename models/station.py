@@ -3,10 +3,9 @@ from datetime import datetime
 from sqlalchemy import (
     func, Integer, String, TIMESTAMP, Column, Float, ForeignKey
     )
-from config.base import Base
+from models.base import Base
 from models.drone import Drone
-from models.station import Task
-from models.log import DroneLog
+# from models.log import DroneLog
 from sqlalchemy.orm import relationship
 from enum import Enum
 
@@ -56,12 +55,5 @@ class Task(Base):
     id_drone = Column(Integer, ForeignKey(Drone.id))
     id_cargo = Column(Integer, ForeignKey(Cargo.id))
     id_flight = Column(Integer, ForeignKey(Flight.id))
-    logs = relationship(Task, backref='task')
+    logs = relationship("Task", backref='task')
 
-class Alert(Base):
-    __tablename__ = "alert"
-
-    name = Column(String, primary_key=True)
-    solution = Column(String)
-    
-    log = Column(Integer, ForeignKey(DroneLog.id))
