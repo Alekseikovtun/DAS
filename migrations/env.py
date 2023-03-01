@@ -5,19 +5,20 @@ from sqlalchemy import pool
 
 from alembic import context
 from config.pydantic_config import settings
-from config.base import Base
+from models import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config1 = context.config
-config1.set_main_option(
-    "sqlalchemy.url",
-    f"mysql://{settings.MYSQL_USER}:{settings.MYSQL_PASSWORD}@{settings.MYSQL_HOST}:{settings.MYSQL_OUT_PORT}/{settings.MYSQL_DATABASE}")
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config1.config_file_name is not None:
     fileConfig(config1.config_file_name)
+
+conn_url = f"mysql://{settings.MYSQL_USER}:{settings.MYSQL_PASSWORD}@{settings.MYSQL_HOST}:{settings.MYSQL_OUT_PORT}/{settings.MYSQL_DATABASE}"
+config1.set_main_option("sqlalchemy.url", conn_url)
+# print("\n\n", f"{conn_url=}", "\n")
 
 # add your model's MetaData object here
 # for 'autogenerate' support
@@ -64,6 +65,8 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
+    # print("/n/n/n/n", f"{config1.get_section(config1.config_ini_section)=}", "/n/n/n")
+
     connectable = engine_from_config(
         config1.get_section(config1.config_ini_section),
         prefix="sqlalchemy.",

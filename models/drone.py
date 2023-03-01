@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, Float, String, ForeignKey
-from config.base import Base
-from models.station import Task, Cargo
-from models.log import DroneLog
+from models.base import Base
+# from models.station import Task
 from sqlalchemy.orm import relationship
 from enum import Enum
 
@@ -32,4 +31,4 @@ class Drone(Base):
     place_number = Column(Integer)
 
     id_drone_type = Column(Integer, ForeignKey(DroneType.id))
-    tasks = relationship(Task, backref='drone')
+    # tasks = relationship(Task, backref='drone')
