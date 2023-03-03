@@ -25,6 +25,7 @@ class Flight(Base):
     deviation = Column(Float)
 
     tasks = relationship('Task', backref='flight')
+    id_task = Column(Integer, ForeignKey('task.id'))
 
 class Cargo(Base):
     __tablename__ = "cargo"
@@ -54,6 +55,6 @@ class Task(Base):
 
     id_drone = Column(Integer, ForeignKey(Drone.id))
     id_cargo = Column(Integer, ForeignKey(Cargo.id))
-    id_flight = Column(Integer, ForeignKey(Flight.id))
+    flights = relationship('Flight', backref='task')
     logs = relationship('DroneLog', backref='task')
 
