@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 class Station():
     async def read_data_for_new_task(self, db: AsyncSession) -> Task:
         q = select(func.min(Task.id))
-        q = q.filter(Task.task_status_id == 1)
+        q = q.filter(Task.task_status == "NEW")
         resp = await db.execute(q)
         min_id = resp.scalar()
         q2 = select(Task).filter(Task.id == min_id)
