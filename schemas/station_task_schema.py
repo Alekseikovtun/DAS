@@ -2,6 +2,8 @@ from pydantic import BaseModel
 
 
 class Task(BaseModel):
-    latitude: float
-    longitude: float
+    id: int
+    gps_latitude: float
+    gps_longitude: float
     priority: str
+    task_status: str

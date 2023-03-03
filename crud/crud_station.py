@@ -15,19 +15,30 @@ class Station():
         return next_task
 
 
-    async def create_task_in_db(self, db: AsyncSession, add_latitude, add_longitude, add_priority) -> Task:
-        resp = await db.execute(func.max(Task.id))
-        last_coord_id = resp.first()[0]
-        new_coord = Task(
-            id=last_coord_id+1,
-            latitude=add_latitude,
-            longitude=add_longitude,
-            task_status_id=1,
-            priority=add_priority
-        )
-        db.add_all([new_coord])
-        # db.commit()
-        return new_coord
+    async def create_task_in_db(self, db: AsyncSession, add_gps_latitude, add_gps_longitude, add_priority, add_task_status) -> Task:
+        try:
+            resp = await db.execute(func.max(Task.id))
+            last_coord_id = resp.first()[0]
+            new_coord = Task(
+                id=last_coord_id+1,
+                gps_latitude=add_gps_latitude,
+                gps_longitude=add_gps_longitude,
+                task_status=add_task_status,
+                priority=add_priority
+            )
+            db.add_all([new_coord])
+            return new_coord
+        except:
+            new_coord = Task(
+                id=1,
+                gps_latitude=add_gps_latitude,
+                gps_longitude=add_gps_longitude,
+                task_status=add_task_status,
+                priority=add_priority
+            )
+            db.add_all([new_coord])
+            return new_coord
+
 
 
     async def update_task_info(self, db: AsyncSession, departure_lat, departure_long) -> Task:

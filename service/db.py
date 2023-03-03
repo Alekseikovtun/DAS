@@ -6,8 +6,8 @@ async def read_data_for_new_task(db) -> Task:
     resp = await crud_station.station.read_data_for_new_task(db)
     return resp
 
-async def create_task_in_db(db, add_latitude, add_longitude, add_priority):
-    resp = await crud_station.station.create_task_in_db(db, add_latitude, add_longitude, add_priority)
+async def create_task_in_db(db, add_gps_latitude, add_gps_longitude, add_priority, add_task_status):
+    resp = await crud_station.station.create_task_in_db(db, add_gps_latitude, add_gps_longitude, add_priority, add_task_status)
     return resp
 
 

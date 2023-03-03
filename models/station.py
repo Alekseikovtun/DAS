@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import (
-    func, Integer, String, TIMESTAMP, Column, Float, ForeignKey
+    func, Integer, TIMESTAMP, Column, Float, ForeignKey, VARCHAR
     )
 from models.base import Base
 from models.drone import Drone
@@ -32,7 +32,7 @@ class Cargo(Base):
     id = Column(Integer, primary_key=True)
     weight = Column(Float)
     volume = Column(Float)
-    name = Column(String)
+    name = Column(VARCHAR(64))
 
     tasks = relationship('Task', backref='cargo')
 
@@ -48,12 +48,12 @@ class Task(Base):
     )
     gps_latitude = Column(Float)
     gps_longitude = Column(Float)
-    priority = Column(String)
-    task_status: TaskStatus = Column(String, nullable=False)
+    priority = Column(VARCHAR(64))
+    task_status: TaskStatus = Column(VARCHAR(64), nullable=False)
     completed_at = Column(TIMESTAMP(timezone=True))
 
     id_drone = Column(Integer, ForeignKey(Drone.id))
     id_cargo = Column(Integer, ForeignKey(Cargo.id))
     id_flight = Column(Integer, ForeignKey(Flight.id))
-    logs = relationship("Task", backref='task')
+    logs = relationship('DroneLog', backref='task')
 

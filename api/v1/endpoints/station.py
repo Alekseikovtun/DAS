@@ -22,7 +22,7 @@ async def read_data_for_new_task(
 async def add_task_to_db(
     task: Task,
     db: AsyncSession = Depends(get_db)
-    ) -> TaskBase:
-    new_task = await station.add_task_to_db(db, task.latitude, task.longitude, task.priority)
+) -> TaskBase:
+    new_task = await station.add_task_to_db(db, task.gps_latitude, task.gps_longitude, task.priority, task.task_status)
     result: TaskBase = TaskBase.from_orm(new_task)
     return result

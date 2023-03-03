@@ -22,12 +22,12 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('weight', sa.Float(), nullable=True),
     sa.Column('volume', sa.Float(), nullable=True),
-    sa.Column('name', sa.String(), nullable=True),
+    sa.Column('name', sa.String(64), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('drone_log',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('log_content', sa.String(), nullable=True),
+    sa.Column('log_content', sa.String(64), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('drone_type',
@@ -50,20 +50,20 @@ def upgrade() -> None:
     op.create_table('log',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(timezone=True), nullable=True),
-    sa.Column('log_content', sa.String(), nullable=True),
+    sa.Column('log_content', sa.String(64), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('alert',
-    sa.Column('name', sa.String(), nullable=False),
-    sa.Column('solution', sa.String(), nullable=True),
+    sa.Column('name', sa.String(64), nullable=False),
+    sa.Column('solution', sa.String(64), nullable=True),
     sa.Column('log', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['log'], ['drone_log.id'], ),
     sa.PrimaryKeyConstraint('name')
     )
     op.create_table('drone',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('access_key', sa.String(), nullable=True),
-    sa.Column('drone_status', sa.String(), nullable=False),
+    sa.Column('access_key', sa.String(64), nullable=True),
+    sa.Column('drone_status', sa.String(64), nullable=False),
     sa.Column('place_number', sa.Integer(), nullable=True),
     sa.Column('id_drone_type', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['id_drone_type'], ['drone_type.id'], ),
@@ -75,8 +75,8 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.TIMESTAMP(timezone=True), nullable=True),
     sa.Column('gps_latitude', sa.Float(), nullable=True),
     sa.Column('gps_longitude', sa.Float(), nullable=True),
-    sa.Column('priority', sa.String(), nullable=True),
-    sa.Column('task_status', sa.String(), nullable=False),
+    sa.Column('priority', sa.String(64), nullable=True),
+    sa.Column('task_status', sa.String(64), nullable=False),
     sa.Column('completed_at', sa.TIMESTAMP(timezone=True), nullable=True),
     sa.Column('id_drone', sa.Integer(), nullable=True),
     sa.Column('id_cargo', sa.Integer(), nullable=True),
