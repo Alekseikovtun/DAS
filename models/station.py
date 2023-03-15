@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import sqlalchemy as sa
 from sqlalchemy import (
     func, Integer, TIMESTAMP, Column, Float, ForeignKey, VARCHAR
     )
@@ -58,3 +58,16 @@ class Task(Base):
     flights = relationship('Flight', backref='task')
     logs = relationship('DroneLog', backref='task')
 
+class ChargingPoint(Base):
+    __tablename__ = "charging_point"
+    id = Column(Integer, primary_key=True)
+    power = Column(Float)
+
+    drones = relationship('Drone', secondary='charging_point_to_drone')
+
+ChargingPoint_to_Drone = sa.Table(
+    'charging_point_to_drone', Base.metadata,
+    sa.Column('charging_point_id', sa.Integer, sa.ForeignKey('charging_point.id')),
+    sa.Column('drone_id', sa.Integer, sa.ForeignKey('drone.id')),
+    sa.Column('id' , sa.Integer, primary_key=True),
+)

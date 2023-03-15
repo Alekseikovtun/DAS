@@ -1,5 +1,5 @@
 from sqlalchemy import func, select
-from models.station import Task
+from models.station import Task, Cargo
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -15,29 +15,43 @@ class Station():
         return next_task
 
 
-    async def create_task_in_db(self, db: AsyncSession, add_gps_latitude, add_gps_longitude, add_priority, add_task_status) -> Task:
+    async def create_task_in_db(self, db: AsyncSession, add_gps_latitude, add_gps_longitude, add_priority, add_task_status, add_weight, add_volume, add_name):
         try:
-            resp = await db.execute(func.max(Task.id))
-            last_coord_id = resp.first()[0]
-            new_coord = Task(
-                id=last_coord_id+1,
+            resp_cargo = await db.execute(func.max(Cargo.id))
+            last_cargo = resp_cargo.first()[0]
+            new_cargo = Cargo(
+                id=last_cargo + 1,
+                weight=add_weight,
+                volume=add_volume,
+                name=add_name,
+            )
+            resp_task = await db.execute(func.max(Task.id))
+            last_task_id = resp_task.first()[0]
+            new_task = Task(
+                id=last_task_id+1,
                 gps_latitude=add_gps_latitude,
                 gps_longitude=add_gps_longitude,
                 task_status=add_task_status,
                 priority=add_priority
             )
-            db.add_all([new_coord])
-            return new_coord
+            db.add_all([new_cargo, new_task])
+            return new_task
         except:
-            new_coord = Task(
+            new_cargo = Cargo(
                 id=1,
+                weight=add_weight,
+                volume=add_volume,
+                name=add_name,
+            )
+            new_task = Task(
+                id = 1,
                 gps_latitude=add_gps_latitude,
                 gps_longitude=add_gps_longitude,
                 task_status=add_task_status,
                 priority=add_priority
             )
-            db.add_all([new_coord])
-            return new_coord
+            db.add_all([new_cargo, new_task])
+            return new_task
 
 
 

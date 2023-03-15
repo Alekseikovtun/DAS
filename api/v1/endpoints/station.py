@@ -1,28 +1,13 @@
 from fastapi import APIRouter, Depends
 from service import station
 from schemas.station_schema import TaskBase, NewTaskFullReturn, DroneInput, TaskGeoJSON
-from schemas.station_task_schema import Task
+from schemas.station_task_schema import Task, Cargo
 from models.station import Task as ModelTask
 from sqlalchemy.ext.asyncio import AsyncSession
 from crud import get_db
 
 router = APIRouter()
-# item:{
-#     geojson_template = {
-#         "geojson": {
-#             "type": "Feature",
-#             "geometry": {
-#                 "type": "Point",
-#                 "coordinates": [1, 2]
-#             },
-#             "properties": {
-#                 "name": "Moscow"
-#             }
-#         }
-#     },
-#     order_id == 1
-# }
- ##deepcopy
+
 
 @router.get('/new_task/', response_model=NewTaskFullReturn)
 async def read_data_for_new_task(
@@ -49,11 +34,12 @@ async def read_data_for_new_task(
     return result
 
 
-@router.post('/add_coord', response_model=NewTaskFullReturn)
+@router.post('/add_new_task', response_model=Task)
 async def add_task_to_db(
     task: Task,
+    cargo: Cargo,
     db: AsyncSession = Depends(get_db)
-) -> NewTaskFullReturn:
-    new_task = await station.add_task_to_db(db, task.gps_latitude, task.gps_longitude, task.priority, task.task_status)
-    result: NewTaskFullReturn = NewTaskFullReturn.from_orm(new_task)
+) -> Task:
+    new_task = await station.add_task_to_db(db, task.gps_latitude, task.gps_longitude, task.priority, task.task_status, cargo.weight, cargo.volume, cargo.name)
+    result: Task = Task.from_orm(new_task)
     return result

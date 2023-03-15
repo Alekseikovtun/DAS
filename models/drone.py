@@ -32,3 +32,4 @@ class Drone(Base):
 
     id_drone_type = Column(Integer, ForeignKey(DroneType.id))
     tasks = relationship('Task', backref='drone')
+    charging_points = relationship('ChargingPoint', secondary='charging_point_to_drone')
