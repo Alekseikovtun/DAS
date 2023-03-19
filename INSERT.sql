@@ -26,3 +26,11 @@ VALUES (1, 100);
 INSERT INTO `mysql`.`charging_point_to_drone`
 (charging_point_id, drone_id, id)
 VALUES (1, 1, 1); 
+
+INSERT INTO `mysql`.`drone_type`
+(id, engine_power, flight_range, load_capacity, cargo_volume, battery_capacity)
+VALUES (2, 1000, 400, 1600, 40, 200); 
+
+INSERT INTO `mysql`.`drone_type`
+(id, engine_power, flight_range, load_capacity, cargo_volume, battery_capacity)
+VALUES (3, 1500, 600, 2400, 60, 300); 

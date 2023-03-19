@@ -1,18 +1,21 @@
 from fastapi import APIRouter, Depends
 from service import drone
-from schemas.station_schema import TaskBase
-from schemas.drone_schema import Drone
+from schemas.drone_schema import Drone, DroneType 
 from sqlalchemy.ext.asyncio import AsyncSession
 from crud import get_db
 
 router = APIRouter()
 
 
-@router.post('/add_drone_info', response_model=TaskBase)
-async def add_drone_status(
-    drone_model: Drone,
+@router.post('/add_drone', response_model=Drone)
+async def add_new_drone(
+    drone_info: Drone,
+    drone_type: DroneType,
     db: AsyncSession = Depends(get_db),
-) -> TaskBase:
-    await drone.add_drone_status(
-        db, drone_model.drone_id, drone_model.battery, drone_model.d_latitude, drone_model.d_longitude
+) -> Drone:
+    new_drone = await drone.add_drone(
+        db, drone_info.access_key, drone_info.drone_status, drone_info.place_number,
+        drone_type.engine_power, drone_type.flight_range, drone_type.load_capacity, drone_type.cargo_volume, drone_type.battery_capacity
     )
+    result: Drone = Drone.from_orm(new_drone)
+    return result
