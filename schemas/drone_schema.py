@@ -1,11 +1,12 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class Drone(BaseModel):
-    access_key: str
-    drone_status: str
-    place_number: int
-    id_drone_type: int
+    access_key: Optional[str]
+    drone_status: Optional[str]
+    place_number: Optional[int]
+    id_drone_type: Optional[int]
 
     class Config:
         orm_mode = True

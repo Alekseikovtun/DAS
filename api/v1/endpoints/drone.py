@@ -14,7 +14,7 @@ async def add_new_drone(
     db: AsyncSession = Depends(get_db),
 ) -> Drone:
     new_drone = await drone.add_drone(
-        db, drone_info.access_key, drone_info.drone_status, drone_info.place_number,
+        db, drone_info.access_key, drone_info.drone_status, drone_info.place_number, drone_info.id_drone_type,
         drone_type.engine_power, drone_type.flight_range, drone_type.load_capacity, drone_type.cargo_volume, drone_type.battery_capacity
     )
     result: Drone = Drone.from_orm(new_drone)

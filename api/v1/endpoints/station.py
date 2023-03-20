@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from service import station
-from schemas.station_schema import TaskBase, NewTaskFullReturn, DroneInput, TaskGeoJSON
+from schemas.station_schema import TaskBase, NewTaskFullReturn# DroneInput, TaskGeoJSON
 from schemas.station_task_schema import Task, Cargo
 from models.station import Task as ModelTask
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,20 +17,18 @@ async def read_data_for_new_task(
     volume: int,
     db: AsyncSession = Depends(get_db)
 ) -> NewTaskFullReturn:
-    input_dict = dict(DroneInput(battery = battery, distance = distance, weight = weight, volume = volume))
+    input_dict = dict(NewTaskFullReturn(input_battery = battery, input_distance = distance, input_weigth = weight, input_volume = volume))
     task_db: ModelTask = await station.read_data_for_new_task(db)
     task: TaskBase = TaskBase.from_orm(task_db)
-    geojson_dict = dict()
-    geojson_dict["id"] = task.id
-    # geojson_dict["geojson"] = {"type": "Feature", "geometry":{"type": "Point", "coordinates": [task.gps_latitude, task.gps_longitude]}, "properties": {"name": "Moscow"}}
-    geojson_dict["geojson"] = {"geometry":{"coordinates": [task.gps_latitude, task.gps_longitude]}}
-    geojson: TaskGeoJSON = TaskGeoJSON(**geojson_dict)
-    result_dict = dict()
-    result_dict["item"] = geojson
-    result_dict["code"] = 200
-    result_dict["msg"] = "OK"
-    result_dict["droneinput"] = input_dict
-    result: NewTaskFullReturn = NewTaskFullReturn(**result_dict)
+    input_dict["code"] = 200
+    input_dict["msg"] = "OK"
+    input_dict["item_geojson_type"] = "Feature"
+    input_dict["item_geojson_geometry_type"] = "Point"
+    input_dict["item_order_id"] = task.id
+    input_dict["item_geojson_geometry_coordinates"] = [task.gps_latitude, task.gps_longitude]
+    input_dict["item_geojson_properties_name"] = "Moscow"
+    input_dict["total"] = 1
+    result: NewTaskFullReturn = NewTaskFullReturn(**input_dict)
     return result
 
 
