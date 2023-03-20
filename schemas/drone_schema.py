@@ -3,10 +3,10 @@ from typing import Optional
 
 
 class Drone(BaseModel):
-    access_key: Optional[str]
-    drone_status: Optional[str]
-    place_number: Optional[int]
-    id_drone_type: Optional[int]
+    access_key: str
+    drone_status: str
+    place_number: int
+    id_drone_type: int
 
     class Config:
         orm_mode = True
@@ -17,3 +17,7 @@ class DroneType(BaseModel):
     load_capacity: float
     cargo_volume: float
     battery_capacity: float
+
+class DroneAndTypeFull(BaseModel):
+    drone_info: Optional[Drone]
+    drone_type: Optional[DroneType]

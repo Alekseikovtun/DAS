@@ -33,4 +33,9 @@ VALUES (2, 1000, 400, 1600, 40, 200);
 
 INSERT INTO `mysql`.`drone_type`
 (id, engine_power, flight_range, load_capacity, cargo_volume, battery_capacity)
-VALUES (3, 1500, 600, 2400, 60, 300); 
+VALUES (3, 1500, 600, 2400, 60, 300);
+
+SELECT 
+drone_type.id, drone_type.engine_power, drone_type.flight_range, 
+drone_type.load_capacity, drone_type.cargo_volume, drone_type.battery_capacity 
+FROM drone_type WHERE drone_type.id = 1
