@@ -65,5 +65,43 @@ class Station():
         record.task_status_id = 3
         # db.commit()
         return record
+    
+    async def registration(self, login, password):
+        login = login
+        password = password
+        refresh_token = "some kind of refresh_token"
+        active_token = "some king of active_token"
+        code = 200
+        msg = "Tokens sent"
+        dict = {
+            "refresh_token":refresh_token,
+            "active_token": active_token,
+            "code": code,
+            "msg": msg
+        }
+        return dict
+    
+    async def token_check(self, active_token):
+        active_token = active_token
+        code = 401
+        msg = "Token Expired"
+        dict = {
+            "code": code,
+            "msg": msg
+        }
+        return dict
+    
+    async def auth(self, login, refresh_token):
+        login = login
+        refresh_token = refresh_token
+        active_token = "some king of active_token"
+        code = 200
+        msg = "Ok"
+        dict = {
+            "active_token": active_token,
+            "code": code,
+            "msg": msg
+        }
+        return dict
 
 station = Station()

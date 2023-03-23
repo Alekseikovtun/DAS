@@ -30,3 +30,15 @@ async def update_task_info(db, departure_lat, departure_long):
 async def read_task_data(db, task_status) -> List[Task]:
     resp = await crud_admin.admin.read_task_data(db, task_status)
     return resp
+
+async def registration(login, password):
+    resp = await crud_station.station.registration(login, password)
+    return resp
+
+async def token_check(active_token):
+    resp = await crud_station.station.token_check(active_token)
+    return resp
+
+async def auth(login, refresh_token):
+    resp = await crud_station.station.auth(login, refresh_token)
+    return resp
