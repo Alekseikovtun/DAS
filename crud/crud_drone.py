@@ -1,4 +1,5 @@
 from models.drone import Drone, DroneType
+from models.station import Task, Flight
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, select
 
@@ -71,4 +72,32 @@ class Dronee():
             db.add_all([new_drone])
             return new_drone
 
+    async def completed_task(self, db: AsyncSession, drone_id, task_id, task_status):
+        q = select(Task).filter(
+            Task.id == task_id
+        )
+        resp = await db.execute(q)
+        record: Task = resp.first()[0]
+        record.task_status = task_status
+        record.completed_at = func.now()
+
+        q1 = select(Drone).filter(
+            Drone.id == drone_id
+        )
+        resp1 = await db.execute(q1)
+        record1: Drone = resp1.first()[0]
+        record1.drone_status = "FREE"
+
+        q2 = select(Flight).filter(
+            Flight.id_task == task_id
+        )
+        resp2 = await db.execute(q2)
+        record2: Flight = resp2.first()[0]
+        record2.finished_at = func.now()
+        
+        dict = {}
+        dict["msg"] = "Task completed"
+        dict["code"] = 200
+        return dict
+    
 drone = Dronee()

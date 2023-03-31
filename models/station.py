@@ -14,18 +14,18 @@ class TaskStatus(str, Enum):
     IN_PROGRESS = "IN PROGRESS"
     COMPLETED = "COMPLETED"
     FAILED = "FAILED"
+    OFFERING = "OFFERING"
+    UNREAL = "UNREAL"
 
 class Flight(Base):
     __tablename__ = "flight"
 
     id = Column(Integer, primary_key=True)
-    started_at = Column(TIMESTAMP(timezone=True))
-    finished_at = Column(TIMESTAMP(timezone=True))
-    estimated_at = Column(TIMESTAMP(timezone=True))
-    deviation = Column(Float)
+    started_at = Column(TIMESTAMP(timezone=True), default=func.now())
+    finished_at: datetime = Column(TIMESTAMP(timezone=True))
 
-    tasks = relationship('Task', backref='flight')
-    id_task = Column(Integer, ForeignKey('task.id'))
+    tasks = relationship('Task', backref='flight') #?
+    id_task = Column(Integer, ForeignKey('task.id')) #?
 
 class Cargo(Base):
     __tablename__ = "cargo"

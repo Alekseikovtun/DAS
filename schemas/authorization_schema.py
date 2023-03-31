@@ -18,6 +18,9 @@ class SingInOutputInfo(BaseModel):
     active_token: str
     code: int
     msg: str
+    coord_latitude: int
+    coord_longitude: int
+    drone_id: int
 
 class TestOutputInfo(BaseModel):
     code: int

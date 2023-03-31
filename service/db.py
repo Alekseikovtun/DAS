@@ -42,3 +42,11 @@ async def token_check(active_token):
 async def auth(login, refresh_token):
     resp = await crud_station.station.auth(login, refresh_token)
     return resp
+
+async def acc_rej_task(db, drone_id, status_code, task_id):
+    await crud_station.station.acc_rej_task(db, drone_id, status_code, task_id)
+    # return resp
+
+async def completed_task(db, drone_id, task_id, task_status):
+    resp = await crud_drone.drone.completed_task(db, drone_id, task_id, task_status)
+    return resp

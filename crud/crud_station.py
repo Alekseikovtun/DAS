@@ -1,5 +1,6 @@
 from sqlalchemy import func, select
-from models.station import Task, Cargo
+from models.station import Task, Cargo, Flight
+from models.drone import Drone
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -12,6 +13,9 @@ class Station():
         q2 = select(Task).filter(Task.id == min_id)
         resp = await db.execute(q2)
         next_task: Task = resp.first()[0]
+        
+        update_task_status = next_task
+        update_task_status.task_status = "OFFERING"        
         return next_task
 
 
@@ -32,7 +36,8 @@ class Station():
                 gps_latitude=add_gps_latitude,
                 gps_longitude=add_gps_longitude,
                 task_status=add_task_status,
-                priority=add_priority
+                priority=add_priority,
+                id_cargo=last_cargo + 1
             )
             db.add_all([new_cargo, new_task])
             return new_task
@@ -48,7 +53,8 @@ class Station():
                 gps_latitude=add_gps_latitude,
                 gps_longitude=add_gps_longitude,
                 task_status=add_task_status,
-                priority=add_priority
+                priority=add_priority,
+                id_cargo=last_cargo + 1
             )
             db.add_all([new_cargo, new_task])
             return new_task
@@ -73,11 +79,17 @@ class Station():
         active_token = "some king of active_token"
         code = 200
         msg = "Tokens sent"
+        coord_latitude = 0
+        coord_longitude = 0
+        drone_id = 1 #потом попроавить и сделать черех запрос
         dict = {
             "refresh_token":refresh_token,
             "active_token": active_token,
             "code": code,
-            "msg": msg
+            "msg": msg, 
+            "coord_latitude": coord_latitude,
+            "coord_longitude": coord_longitude,
+            "drone_id":drone_id
         }
         return dict
     
@@ -103,5 +115,52 @@ class Station():
             "msg": msg
         }
         return dict
+
+    async def acc_rej_task(self, db: AsyncSession, drone_id, status_code, task_id):
+        q = select(Task).filter(
+            Task.id == task_id
+        )
+        resp = await db.execute(q)
+        record: Task = resp.first()[0]
+
+        q1 = select(Drone).filter(
+            Drone.id == drone_id
+        )
+        resp1 = await db.execute(q1)
+        record1: Drone = resp1.first()[0]
+
+        if status_code == True:
+            record.task_status = "IN PROGRESS"
+            record.id_drone = drone_id
+            record1.drone_status = "FLYING"
+
+            # dict = {}
+            # dict["answer"] = "The drone took the task"
+            # dict["task_id"] = task_id
+
+            try:
+                resp_flight = await db.execute(func.max(Flight.id))
+                last_flight_id = resp_flight.first()[0]
+                new_flight: Flight = Flight(
+                    id=last_flight_id+1,
+                    id_task=task_id,
+                    flight_status="PROCESS"
+                )
+                db.add(new_flight)
+            except:
+                new_flight: Flight = Flight(
+                    id=1,
+                    id_task=task_id,
+                    flight_status="PROCESS"
+                )
+                db.add(new_flight)
+            # return dict
+        else:
+            record.task_status = "NEW"
+
+            # dict = {}
+            # dict["answer"] = "The drone refused the task"
+            # dict["task_id"] = task_id
+            # return dict
 
 station = Station()
