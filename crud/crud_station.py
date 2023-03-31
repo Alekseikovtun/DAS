@@ -162,5 +162,19 @@ class Station():
             # dict["answer"] = "The drone refused the task"
             # dict["task_id"] = task_id
             # return dict
+    
+    async def set_task_status_unreal(self, db: AsyncSession, task_id, task_status):
+        q = select(Task).filter(
+            Task.id == task_id
+        )
+        resp = await db.execute(q)
+        record: Task = resp.first()[0]
+        record.task_status = task_status
+
+
+        dict = {}
+        dict["task_id"] = task_id
+        dict["msg"] = "The new task status is set to Unreal"
+        return dict
 
 station = Station()

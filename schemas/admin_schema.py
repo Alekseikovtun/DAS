@@ -12,3 +12,10 @@ class MainTaskInfo(TaskStatus):
 
     class Config:
         orm_mode = True
+
+class UnrealStatus(BaseModel):
+    task_id: int
+    msg: str
+
+class SetUnrealStatus(TaskStatus):
+    task_id: int

@@ -50,3 +50,7 @@ async def acc_rej_task(db, drone_id, status_code, task_id):
 async def completed_task(db, drone_id, task_id, task_status):
     resp = await crud_drone.drone.completed_task(db, drone_id, task_id, task_status)
     return resp
+
+async def set_task_status_unreal(db, task_id, task_status):
+    resp = await crud_station.station.set_task_status_unreal(db, task_id, task_status)
+    return resp
