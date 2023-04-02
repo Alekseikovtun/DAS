@@ -19,10 +19,10 @@ class NewTaskFullReturn(BaseModel):
     item_geojson_geometry_coordinates: Optional[List[float]]
     item_geojson_properties_name: Optional[str]
     total: Optional[int]
-    input_battery: int
-    input_distance: int
-    input_weigth: int
-    input_volume: int
+    input_battery: float
+    input_distance: float
+    input_weigth: float
+    input_volume: float
 
 # class TaskBase(BaseModel):
 #     id: int

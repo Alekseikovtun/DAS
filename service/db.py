@@ -4,8 +4,8 @@ from models.drone import Drone as ModelDrone
 from typing import List
 
 
-async def read_data_for_new_task(db) -> Task:
-    resp = await crud_station.station.read_data_for_new_task(db)
+async def read_data_for_new_task(db, distance, weight, volume) -> Task:
+    resp = await crud_station.station.read_data_for_new_task(db, distance, weight, volume)
     return resp
 
 async def create_task_in_db(db, add_gps_latitude, add_gps_longitude, add_priority, add_task_status, add_weight, add_volume, add_name):

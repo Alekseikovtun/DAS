@@ -2,22 +2,27 @@ from sqlalchemy import func, select
 from models.station import Task, Cargo, Flight
 from models.drone import Drone
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.sql.expression import and_
+from typing import List
+from distance import distance as calculating_distance
 
 
 class Station():
-    async def read_data_for_new_task(self, db: AsyncSession) -> Task:
-        q = select(func.min(Task.id))
-        q = q.filter(Task.task_status == "NEW")
+    async def read_data_for_new_task(self, db: AsyncSession, distance, weight, volume) -> Task:
+        q = select(Task).join(Cargo).filter(and_(Cargo.weight <= weight, Cargo.volume <= volume, Task.task_status == "NEW"))
         resp = await db.execute(q)
-        min_id = resp.scalar()
-        q2 = select(Task).filter(Task.id == min_id)
-        resp = await db.execute(q2)
-        next_task: Task = resp.first()[0]
-        
-        update_task_status = next_task
-        update_task_status.task_status = "OFFERING"        
-        return next_task
+        all_new_tasks: List[Task] = resp.scalars().all()
 
+        current_point_longitude = 55.110485
+        current_point_latitude = 37.962350
+        
+        for row in all_new_tasks:
+            dist_to_task_point = await calculating_distance(current_point_longitude,row.gps_latitude , current_point_latitude, row.gps_longitude)
+            if dist_to_task_point <= distance:
+                found_new_task = row
+                found_new_task.task_status = "OFFERING"
+                return found_new_task
+        return None  
 
     async def create_task_in_db(self, db: AsyncSession, add_gps_latitude, add_gps_longitude, add_priority, add_task_status, add_weight, add_volume, add_name):
         try:

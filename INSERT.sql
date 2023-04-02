@@ -38,4 +38,14 @@ VALUES (3, 1500, 600, 2400, 60, 300);
 SELECT 
 drone_type.id, drone_type.engine_power, drone_type.flight_range, 
 drone_type.load_capacity, drone_type.cargo_volume, drone_type.battery_capacity 
-FROM drone_type WHERE drone_type.id = 1
+FROM drone_type WHERE drone_type.id = 1;
+
+INSERT INTO `mysql`.`cargo`
+(id, weight, volume, name)
+VALUES (3, 100, 10, "Computer");
+
+INSERT INTO `mysql`.`task`
+(id, created_at, gps_latitude, gps_longitude, priority, task_status, id_cargo)
+VALUES (4, "2023-03-03 13:28:14", 55.108175, 37.975712, NULL, "NEW", 3); 
+
+SELECT * FROM `mysql`.`task` WHERE task_status = "NEW";
