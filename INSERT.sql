@@ -49,3 +49,7 @@ INSERT INTO `mysql`.`task`
 VALUES (4, "2023-03-03 13:28:14", 55.108175, 37.975712, NULL, "NEW", 3); 
 
 SELECT * FROM `mysql`.`task` WHERE task_status = "NEW";
+
+INSERT INTO `mysql`.`all_logs`
+(id, log_type, context)
+VALUES (1, "info", "DB created");

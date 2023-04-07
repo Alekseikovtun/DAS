@@ -1,5 +1,6 @@
 from models.drone import Drone, DroneType
 from models.station import Task, Flight
+from models.log import AllLogs, DroneLog
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, select
 
@@ -27,20 +28,28 @@ class Dronee():
             else:
                 new_drone_type_id = 1
 
-            resp_drone = await db.execute(func.max(Drone.id))            
-            last_drone = resp_drone.first()[0]
+            # resp_drone = await db.execute(func.max(Drone.id))            
+            # last_drone = resp_drone.first()[0]
 
             resp_drone_place = await db.execute(func.max(Drone.place_number))            
             last_drone_place = resp_drone_place.first()[0]
             new_drone: Drone = Drone(
-                id=last_drone + 1,
+                # id=last_drone + 1,
                 access_key="something",
                 drone_status="FREE",
                 place_number=last_drone_place + 1,
                 # id_drone_type=add_id_drone_type
                 id_drone_type=new_drone_type_id,
             )
-            db.add_all([new_drone])
+
+            # resp_log = await db.execute(func.max(AllLogs.id))
+            # last_log = resp_log.first()[0]
+            new_log: AllLogs = AllLogs(
+                # id=last_log+1,
+                log_type="info",
+                context=f'The drone has been created'
+            )
+            db.add_all([new_drone, new_log])
             return new_drone
         except Exception as ex:
             q1 = select(DroneType).filter(DroneType.id == 1)
@@ -62,17 +71,25 @@ class Dronee():
                 new_drone_type_id = 1
 
             new_drone = Drone(
-                id=1,
+                # id=1,
                 access_key="something",
                 drone_status="FREE",
                 place_number=1,
                 # id_drone_type=add_id_drone_type,
                 id_drone_type=new_drone_type_id,
             )
-            db.add_all([new_drone])
+
+            # resp_log = await db.execute(func.max(AllLogs.id))
+            # last_log = resp_log.first()[0]
+            new_log: AllLogs = AllLogs(
+                # id=last_log+1,
+                log_type="info",
+                context=f'The drone has been created'
+            )
+            db.add_all([new_drone, new_log])
             return new_drone
 
-    async def completed_task(self, db: AsyncSession, drone_id, task_id, task_status):
+    async def completed_task(self, db: AsyncSession, drone_id, task_id, task_status, drone_log):
         q = select(Task).filter(
             Task.id == task_id
         )
@@ -94,6 +111,26 @@ class Dronee():
         resp2 = await db.execute(q2)
         record2: Flight = resp2.first()[0]
         record2.finished_at = func.now()
+        
+        # resp_log = await db.execute(func.max(AllLogs.id))
+        # last_log = resp_log.first()[0]
+        new_log: AllLogs = AllLogs(
+            # id=last_log+1,
+            log_type="info",
+            context=f'Task {task_id} completed with the status {task_status}'
+        )
+        db.add(new_log)
+
+        # resp_log = await db.execute(func.max(AllLogs.id))
+        # last_log = resp_log.first()[0]
+        new_log: AllLogs = AllLogs(
+            #id=last_log+1,
+            log_type="drone_log",
+            context=drone_log
+        )
+        db.add(new_log)
+
+        # resp_drone_log = await db.execute(func)
         
         dict = {}
         dict["msg"] = "Task completed"

@@ -12,11 +12,15 @@ async def add_new_drone(
     drone_type: DroneType,
     db: AsyncSession = Depends(get_db),
 ) -> DroneAndTypeFull:
-    new_drone: Drone = await drone.add_drone(
-        db, drone_type.engine_power, drone_type.flight_range, drone_type.load_capacity, drone_type.cargo_volume, drone_type.battery_capacity
-    )
-    result = DroneAndTypeFull(drone_info=new_drone, drone_type=drone_type)
-    return result
+    try:
+        new_drone: Drone = await drone.add_drone(
+            db, drone_type.engine_power, drone_type.flight_range, drone_type.load_capacity, drone_type.cargo_volume, drone_type.battery_capacity
+        )
+        result = DroneAndTypeFull(drone_info=new_drone, drone_type=drone_type)
+        return result
+    except:
+        except_response = {"code": 415, "msg": "Unsupported Media Type"}
+        return except_response
 
 @router.post('/acc_rej_task', response_model=None)
 async def accepting_rejecting_task(
@@ -31,5 +35,5 @@ async def drone_completed_task(
     flight_result: DroneTaskCompleted,
     db: AsyncSession = Depends(get_db)
 ) -> DroneTaskCompletedAnswer:
-    result = await drone.drone_completed_task(db, flight_result.drone_id, flight_result.task_id, flight_result.task_status)
+    result = await drone.drone_completed_task(db, flight_result.drone_id, flight_result.task_id, flight_result.task_status, flight_result.drone_log)
     return result

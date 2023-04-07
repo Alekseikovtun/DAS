@@ -21,6 +21,8 @@ class DroneType(BaseModel):
 class DroneAndTypeFull(BaseModel):
     drone_info: Optional[Drone]
     drone_type: Optional[DroneType]
+    code: Optional[int]
+    msg: Optional[str]
 
 class DroneSolution(BaseModel):
     drone_id: int
@@ -35,6 +37,7 @@ class DroneTaskCompleted(BaseModel):
     drone_id: int
     task_id: int
     task_status: str
+    drone_log: str
 
 class DroneTaskCompletedAnswer(BaseModel):
     code: int

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 """input"""
 class SignInInputInfo(BaseModel):
@@ -14,13 +15,13 @@ class LogInInputInfo(BaseModel):
 
 """output"""
 class SingInOutputInfo(BaseModel):
-    refresh_token: str
-    active_token: str
+    refresh_token: Optional[str]
+    active_token: Optional[str]
     code: int
     msg: str
-    coord_latitude: int
-    coord_longitude: int
-    drone_id: int
+    coord_latitude: Optional[int]
+    coord_longitude: Optional[int]
+    drone_id: Optional[int]
 
 class TestOutputInfo(BaseModel):
     code: int

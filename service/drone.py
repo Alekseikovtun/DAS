@@ -28,7 +28,8 @@ async def drone_completed_task(
         db, 
         drone_id,
         task_id,
-        task_status
+        task_status,
+        drone_log
 ):
-    resp = await completed_task(db, drone_id, task_id, task_status)
+    resp = await completed_task(db, drone_id, task_id, task_status, drone_log)
     return resp

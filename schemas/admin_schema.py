@@ -9,6 +9,8 @@ class MainTaskInfo(TaskStatus):
     gps_latitude: float
     gps_longitude: float
     priority: str
+    code: Optional[int]
+    msg: Optional[str]
 
     class Config:
         orm_mode = True
@@ -16,6 +18,7 @@ class MainTaskInfo(TaskStatus):
 class UnrealStatus(BaseModel):
     task_id: int
     msg: str
+    code: Optional[int]
 
 class SetUnrealStatus(TaskStatus):
     task_id: int

@@ -1,6 +1,7 @@
 from sqlalchemy import func, select
 from models.station import Task, Cargo, Flight
 from models.drone import Drone
+from models.log import AllLogs
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import and_
 from typing import List
@@ -21,7 +22,25 @@ class Station():
             if dist_to_task_point <= distance:
                 found_new_task = row
                 found_new_task.task_status = "OFFERING"
+
+                # resp_log = await db.execute(func.max(AllLogs.id))
+                # last_log = resp_log.first()[0]
+                new_log: AllLogs = AllLogs(
+                    # id=last_log+1,
+                    log_type="info",
+                    context="The drone is offered a task"
+                )
+                db.add(new_log)
                 return found_new_task
+        
+        # resp_log = await db.execute(func.max(AllLogs.id))
+        # last_log = resp_log.first()[0]
+        new_log: AllLogs = AllLogs(
+            # id=last_log+1,
+            log_type="info",
+            context="There are no available tasks for the drone"
+        )
+        db.add(new_log)
         return None  
 
     async def create_task_in_db(self, db: AsyncSession, add_gps_latitude, add_gps_longitude, add_priority, add_task_status, add_weight, add_volume, add_name):
@@ -29,22 +48,31 @@ class Station():
             resp_cargo = await db.execute(func.max(Cargo.id))
             last_cargo = resp_cargo.first()[0]
             new_cargo = Cargo(
-                id=last_cargo + 1,
+                # id=last_cargo + 1,
                 weight=add_weight,
                 volume=add_volume,
                 name=add_name,
             )
-            resp_task = await db.execute(func.max(Task.id))
-            last_task_id = resp_task.first()[0]
+            # resp_task = await db.execute(func.max(Task.id))
+            # last_task_id = resp_task.first()[0]
             new_task = Task(
-                id=last_task_id+1,
+                # id=last_task_id+1,
                 gps_latitude=add_gps_latitude,
                 gps_longitude=add_gps_longitude,
                 task_status=add_task_status,
                 priority=add_priority,
                 id_cargo=last_cargo + 1
             )
-            db.add_all([new_cargo, new_task])
+
+            resp_log = await db.execute(func.max(AllLogs.id))
+            last_log = resp_log.first()[0]
+            new_log: AllLogs = AllLogs(
+                id=last_log+1,
+                log_type="info",
+                context=f"Added a new task with cargo {add_name}"
+            )
+            db.add(new_log)
+            db.add_all([new_cargo, new_task, new_log])
             return new_task
         except:
             new_cargo = Cargo(
@@ -61,21 +89,30 @@ class Station():
                 priority=add_priority,
                 id_cargo=last_cargo + 1
             )
-            db.add_all([new_cargo, new_task])
+
+            # resp_log = await db.execute(func.max(AllLogs.id))
+            # last_log = resp_log.first()[0]
+            new_log: AllLogs = AllLogs(
+                # id=last_log+1,
+                log_type="info",
+                context=f"Added a new task with ID {1} with cargo {add_name}"
+            )
+            db.add(new_log)
+            db.add_all([new_cargo, new_task, new_log])
             return new_task
 
 
 
-    async def update_task_info(self, db: AsyncSession, departure_lat, departure_long) -> Task:
-        q = select(Task).filter(
-            Task.latitude == departure_lat,
-            Task.longitude == departure_long
-        )
-        resp = await db.execute(q)
-        record: Task = resp.one()
-        record.task_status_id = 3
-        # db.commit()
-        return record
+    # async def update_task_info(self, db: AsyncSession, departure_lat, departure_long) -> Task:
+    #     q = select(Task).filter(
+    #         Task.latitude == departure_lat,
+    #         Task.longitude == departure_long
+    #     )
+    #     resp = await db.execute(q)
+    #     record: Task = resp.one()
+    #     record.task_status_id = 3
+    #     # db.commit()
+    #     return record
     
     async def registration(self, login, password):
         login = login
@@ -139,34 +176,40 @@ class Station():
             record.id_drone = drone_id
             record1.drone_status = "FLYING"
 
-            # dict = {}
-            # dict["answer"] = "The drone took the task"
-            # dict["task_id"] = task_id
+            # resp_log = await db.execute(func.max(AllLogs.id))
+            # last_log = resp_log.first()[0]
+            new_log: AllLogs = AllLogs(
+                # id=last_log+1,
+                log_type="info",
+                context=f"Drone number {drone_id} has accepted the task"
+            )
+            db.add(new_log)
 
             try:
-                resp_flight = await db.execute(func.max(Flight.id))
-                last_flight_id = resp_flight.first()[0]
+                # resp_flight = await db.execute(func.max(Flight.id))
+                # last_flight_id = resp_flight.first()[0]
                 new_flight: Flight = Flight(
-                    id=last_flight_id+1,
+                    # id=last_flight_id+1,
                     id_task=task_id,
-                    flight_status="PROCESS"
                 )
                 db.add(new_flight)
             except:
                 new_flight: Flight = Flight(
                     id=1,
                     id_task=task_id,
-                    flight_status="PROCESS"
                 )
                 db.add(new_flight)
             # return dict
         else:
             record.task_status = "NEW"
-
-            # dict = {}
-            # dict["answer"] = "The drone refused the task"
-            # dict["task_id"] = task_id
-            # return dict
+            # resp_log = await db.execute(func.max(AllLogs.id))
+            # last_log = resp_log.first()[0]
+            new_log: AllLogs = AllLogs(
+                # id=last_log+1,
+                log_type="info",
+                context=f"Drone number {drone_id} refused the task"
+            )
+            db.add(new_log)
     
     async def set_task_status_unreal(self, db: AsyncSession, task_id, task_status):
         q = select(Task).filter(
@@ -176,6 +219,15 @@ class Station():
         record: Task = resp.first()[0]
         record.task_status = task_status
 
+        record.task_status = "NEW"
+        # resp_log = await db.execute(func.max(AllLogs.id))
+        # last_log = resp_log.first()[0]
+        new_log: AllLogs = AllLogs(
+            # id=last_log+1,
+            log_type="info",
+            context=f"The administrator gave task number {task_id} the status {task_status}"
+        )
+        db.add(new_log)
 
         dict = {}
         dict["task_id"] = task_id
