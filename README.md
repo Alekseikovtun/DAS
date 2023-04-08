@@ -1,3 +1,4 @@
+[![Build status](https://github.com/alekseikovtun//DAS/actions/workflows/test.yml/badge.svg?branch=develop)](https://github.com/alekseikovtun//DAS/actions/workflows/test.yml)
 # Installation Guide
 1. Clone a repository using the <**git clone https://github.com/Alekseikovtun/DAS.git -b stage**> command
 2. Create a virtual environment
