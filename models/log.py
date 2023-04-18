@@ -1,15 +1,15 @@
-from sqlalchemy import Column, Integer, TIMESTAMP, func, ForeignKey, VARCHAR, TEXT
+from sqlalchemy import (
+    Column, Integer, TIMESTAMP, func, ForeignKey, VARCHAR, TEXT)
 from models.base import Base
-# from models.station import Alert, Task
 from sqlalchemy.orm import relationship
 
 
-class Log(Base): #This table is not needed
+class Log(Base):
     __tablename__ = "log"
 
     id = Column(Integer, primary_key=True)
     created_at = Column(TIMESTAMP(timezone=True), default=func.now())
-    log_content = Column(TEXT) 
+    log_content = Column(TEXT)
 
 
 class DroneLog(Base):
@@ -27,7 +27,7 @@ class Alert(Base):
 
     name = Column(VARCHAR(255), primary_key=True)
     solution = Column(TEXT)
-    
+
     log = Column(Integer, ForeignKey(DroneLog.id))
 
 
@@ -38,4 +38,3 @@ class AllLogs(Base):
     created_at = Column(TIMESTAMP(timezone=True), default=func.now())
     log_type = Column(VARCHAR(255))
     context = Column(TEXT)
-

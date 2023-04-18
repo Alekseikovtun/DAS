@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from service import station
-from schemas.station_schema import TaskBase, NewTaskFullReturn# DroneInput, TaskGeoJSON
+from schemas.station_schema import TaskBase, NewTaskFullReturn
 from schemas.station_task_schema import Task, Cargo
 from models.station import Task as ModelTask
 from sqlalchemy.ext.asyncio import AsyncSession

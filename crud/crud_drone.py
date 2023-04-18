@@ -130,6 +130,11 @@ class Dronee():
         )
         db.add(new_log)
 
+        new_log: DroneLog = DroneLog(
+            log_content=drone_log,
+            id_task=task_id
+        )
+        db.add(new_log)
         # resp_drone_log = await db.execute(func)
         
         dict = {}

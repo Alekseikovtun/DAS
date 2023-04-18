@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 class Cargo(BaseModel):
     weight: float
     volume: float
@@ -8,6 +9,7 @@ class Cargo(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 class Task(BaseModel):
     gps_latitude: float

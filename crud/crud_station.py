@@ -1,11 +1,12 @@
 from sqlalchemy import func, select
-from models.station import Task, Cargo, Flight
+from models.station import Task, Cargo, Flight, DroneLoginData
 from models.drone import Drone
 from models.log import AllLogs
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import and_
 from typing import List
 from distance import distance as calculating_distance
+import jwt
 
 
 class Station():
@@ -90,10 +91,7 @@ class Station():
                 id_cargo=last_cargo + 1
             )
 
-            # resp_log = await db.execute(func.max(AllLogs.id))
-            # last_log = resp_log.first()[0]
             new_log: AllLogs = AllLogs(
-                # id=last_log+1,
                 log_type="info",
                 context=f"Added a new task with ID {1} with cargo {add_name}"
             )
@@ -102,36 +100,33 @@ class Station():
             return new_task
 
 
-
-    # async def update_task_info(self, db: AsyncSession, departure_lat, departure_long) -> Task:
-    #     q = select(Task).filter(
-    #         Task.latitude == departure_lat,
-    #         Task.longitude == departure_long
-    #     )
-    #     resp = await db.execute(q)
-    #     record: Task = resp.one()
-    #     record.task_status_id = 3
-    #     # db.commit()
-    #     return record
-    
-    async def registration(self, login, password):
-        login = login
-        password = password
-        refresh_token = "some kind of refresh_token"
-        active_token = "some king of active_token"
+    async def registration(self, db: AsyncSession, login, password):
+        encoded_refresh_token = jwt.encode({"refresh_token":"some kind of refresh_token"}, "DAS", algorithm="HS256")
+        encoded_active_token = jwt.encode({"active_token":"some king of active_token"}, "DAS", algorithm="HS256")
         code = 200
         msg = "Tokens sent"
-        coord_latitude = 0
-        coord_longitude = 0
-        drone_id = 1 #потом попроавить и сделать черех запрос
+        coord_latitude = 37.962350
+        coord_longitude = 55.110485
+        resp_drone = await db.execute(func.max(Drone.id))
+        last_drone = resp_drone.first()[0]
+
+        new_drone_login_data: DroneLoginData = DroneLoginData(
+            drone_id=last_drone,
+            login=login,
+            password=password,
+            refresh_token=encoded_refresh_token,
+            active_token=encoded_active_token
+        )
+        db.add_all([new_drone_login_data])
+
         dict = {
-            "refresh_token":refresh_token,
-            "active_token": active_token,
+            "refresh_token":encoded_refresh_token,
+            "active_token": encoded_active_token,
             "code": code,
             "msg": msg, 
             "coord_latitude": coord_latitude,
             "coord_longitude": coord_longitude,
-            "drone_id":drone_id
+            "drone_id":last_drone
         }
         return dict
     
@@ -176,20 +171,14 @@ class Station():
             record.id_drone = drone_id
             record1.drone_status = "FLYING"
 
-            # resp_log = await db.execute(func.max(AllLogs.id))
-            # last_log = resp_log.first()[0]
             new_log: AllLogs = AllLogs(
-                # id=last_log+1,
                 log_type="info",
                 context=f"Drone number {drone_id} has accepted the task"
             )
             db.add(new_log)
 
             try:
-                # resp_flight = await db.execute(func.max(Flight.id))
-                # last_flight_id = resp_flight.first()[0]
                 new_flight: Flight = Flight(
-                    # id=last_flight_id+1,
                     id_task=task_id,
                 )
                 db.add(new_flight)
@@ -199,13 +188,9 @@ class Station():
                     id_task=task_id,
                 )
                 db.add(new_flight)
-            # return dict
         else:
             record.task_status = "NEW"
-            # resp_log = await db.execute(func.max(AllLogs.id))
-            # last_log = resp_log.first()[0]
             new_log: AllLogs = AllLogs(
-                # id=last_log+1,
                 log_type="info",
                 context=f"Drone number {drone_id} refused the task"
             )
@@ -220,10 +205,7 @@ class Station():
         record.task_status = task_status
 
         record.task_status = "NEW"
-        # resp_log = await db.execute(func.max(AllLogs.id))
-        # last_log = resp_log.first()[0]
         new_log: AllLogs = AllLogs(
-            # id=last_log+1,
             log_type="info",
             context=f"The administrator gave task number {task_id} the status {task_status}"
         )

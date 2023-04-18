@@ -1,8 +1,10 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 class TaskStatus(BaseModel):
     task_status: str
+
 
 class MainTaskInfo(TaskStatus):
     id: int
@@ -15,10 +17,12 @@ class MainTaskInfo(TaskStatus):
     class Config:
         orm_mode = True
 
+
 class UnrealStatus(BaseModel):
     task_id: int
     msg: str
     code: Optional[int]
+
 
 class SetUnrealStatus(TaskStatus):
     task_id: int

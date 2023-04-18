@@ -53,3 +53,9 @@ SELECT * FROM `mysql`.`task` WHERE task_status = "NEW";
 INSERT INTO `mysql`.`all_logs`
 (id, log_type, context)
 VALUES (1, "info", "DB created");
+
+INSERT INTO `mysql`.`drone_login_data`
+(drone_id)
+VALUES (5);
+
+DELETE FROM `mysql`.`drone_login_data` WHERE drone_id=5;

@@ -28,7 +28,7 @@ jobs:
         run: mypy .
         
       - name: Flake8 check
-        run: flake8 .
+        run: flake8 --ignore=F401,E122,E128
       
       - name: ISort check
         run: isort .

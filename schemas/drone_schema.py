@@ -11,6 +11,7 @@ class Drone(BaseModel):
     class Config:
         orm_mode = True
 
+
 class DroneType(BaseModel):
     engine_power: float
     flight_range: float
@@ -18,26 +19,26 @@ class DroneType(BaseModel):
     cargo_volume: float
     battery_capacity: float
 
+
 class DroneAndTypeFull(BaseModel):
     drone_info: Optional[Drone]
     drone_type: Optional[DroneType]
     code: Optional[int]
     msg: Optional[str]
 
+
 class DroneSolution(BaseModel):
     drone_id: int
     task_id: int
     status_code: bool
 
-# class Report(BaseModel):
-#     answer: Optional[str]
-#     task_id: Optional[int]
 
 class DroneTaskCompleted(BaseModel):
     drone_id: int
     task_id: int
     task_status: str
     drone_log: str
+
 
 class DroneTaskCompletedAnswer(BaseModel):
     code: int
