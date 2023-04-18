@@ -1,17 +1,17 @@
 """new migrations
 
-Revision ID: 4fbba37a2562
-Revises: f10448807a4e
-Create Date: 2023-03-03 09:42:18.387451
+Revision ID: e7c40c50ccb5
+Revises: eb0367a98ecf
+Create Date: 2023-03-24 08:27:53.000797
 
 """
 from alembic import op
 import sqlalchemy as sa
-
+from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision = '4fbba37a2562'
-down_revision = 'f10448807a4e'
+revision = 'e7c40c50ccb5'
+down_revision = 'eb0367a98ecf'
 branch_labels = None
 depends_on = None
 

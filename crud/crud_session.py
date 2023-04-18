@@ -7,6 +7,10 @@ connection_string = f"""mysql+asyncmy://\
 {db_config.DB_USER}:{db_config.DB_PASSWORD}\
 @{db_config.DB_HOST}:{db_config.DB_OUT_PORT}/{db_config.DB_NAME}"""
 
+connection_string_direct = f"""mysql://\
+{db_config.DB_USER}:{db_config.DB_PASSWORD}\
+@{db_config.DB_HOST}:{db_config.DB_OUT_PORT}/{db_config.DB_NAME}"""
+
 engine = create_async_engine(
     connection_string,
     pool_pre_ping=True,

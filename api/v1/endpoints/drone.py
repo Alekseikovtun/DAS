@@ -1,18 +1,39 @@
 from fastapi import APIRouter, Depends
 from service import drone
-from schemas.station_schema import TaskBase
-from schemas.drone_schema import Drone
+from schemas.drone_schema import Drone, DroneType, DroneAndTypeFull, DroneSolution, DroneTaskCompletedAnswer, DroneTaskCompleted
 from sqlalchemy.ext.asyncio import AsyncSession
 from crud import get_db
 
 router = APIRouter()
 
 
-@router.post('/add_drone_info', response_model=TaskBase)
-async def add_drone_status(
-    drone_model: Drone,
+@router.post('/add_drone', response_model=DroneAndTypeFull)
+async def add_new_drone(
+    drone_type: DroneType,
     db: AsyncSession = Depends(get_db),
-) -> TaskBase:
-    await drone.add_drone_status(
-        db, drone_model.drone_id, drone_model.battery, drone_model.d_latitude, drone_model.d_longitude
-    )
+) -> DroneAndTypeFull:
+    try:
+        new_drone: Drone = await drone.add_drone(
+            db, drone_type.engine_power, drone_type.flight_range, drone_type.load_capacity, drone_type.cargo_volume, drone_type.battery_capacity
+        )
+        result = DroneAndTypeFull(drone_info=new_drone, drone_type=drone_type)
+        return result
+    except:
+        except_response = {"code": 415, "msg": "Unsupported Media Type"}
+        return except_response
+
+@router.post('/acc_rej_task', response_model=None)
+async def accepting_rejecting_task(
+    drone_solution: DroneSolution,
+    db: AsyncSession = Depends(get_db)
+) -> None:
+    await drone.accepting_rejecting_task(db,drone_solution.drone_id, drone_solution.status_code, drone_solution.task_id)
+    
+
+@router.post('/task_completed', response_model=DroneTaskCompletedAnswer)
+async def drone_completed_task(
+    flight_result: DroneTaskCompleted,
+    db: AsyncSession = Depends(get_db)
+) -> DroneTaskCompletedAnswer:
+    result = await drone.drone_completed_task(db, flight_result.drone_id, flight_result.task_id, flight_result.task_status, flight_result.drone_log)
+    return result

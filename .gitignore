@@ -1045,3 +1045,6 @@ config/__pycache__/db_config.cpython-38.pyc
 config/__pycache__/*.pyc
 migrations/versions/__pycache__/*.*
 models/__pycache__/log.cpython-38.pyc
+api/v1/authorization/__pycache__/authorization.cpython-38.pyc
+service/__pycache__/admin.cpython-38.pyc
+service/__pycache__/drone.cpython-38.pyc

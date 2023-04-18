@@ -1,30 +1,32 @@
 from datetime import datetime
-
+import sqlalchemy as sa
 from sqlalchemy import (
-    func, Integer, TIMESTAMP, Column, Float, ForeignKey, VARCHAR
-    )
+    func, Integer, TIMESTAMP, Column, Float, ForeignKey, VARCHAR, TEXT)
 from models.base import Base
 from models.drone import Drone
-# from models.log import DroneLog
 from sqlalchemy.orm import relationship
 from enum import Enum
+
 
 class TaskStatus(str, Enum):
     NEW = "NEW"
     IN_PROGRESS = "IN PROGRESS"
     COMPLETED = "COMPLETED"
     FAILED = "FAILED"
+    OFFERING = "OFFERING"
+    UNREAL = "UNREAL"
+
 
 class Flight(Base):
     __tablename__ = "flight"
 
     id = Column(Integer, primary_key=True)
-    started_at = Column(TIMESTAMP(timezone=True))
-    finished_at = Column(TIMESTAMP(timezone=True))
-    estimated_at = Column(TIMESTAMP(timezone=True))
-    deviation = Column(Float)
+    started_at = Column(TIMESTAMP(timezone=True), default=func.now())
+    finished_at: datetime = Column(TIMESTAMP(timezone=True))
 
     tasks = relationship('Task', backref='flight')
+    id_task = Column(Integer, ForeignKey('task.id'))
+
 
 class Cargo(Base):
     __tablename__ = "cargo"
@@ -35,6 +37,7 @@ class Cargo(Base):
     name = Column(VARCHAR(64))
 
     tasks = relationship('Task', backref='cargo')
+
 
 class Task(Base):
     __tablename__ = "task"
@@ -54,6 +57,33 @@ class Task(Base):
 
     id_drone = Column(Integer, ForeignKey(Drone.id))
     id_cargo = Column(Integer, ForeignKey(Cargo.id))
-    id_flight = Column(Integer, ForeignKey(Flight.id))
+    flights = relationship('Flight', backref='task')
     logs = relationship('DroneLog', backref='task')
 
+
+class ChargingPoint(Base):
+    __tablename__ = "charging_point"
+
+    id = Column(Integer, primary_key=True)
+    power = Column(Float)
+
+    drones = relationship('Drone', secondary='charging_point_to_drone')
+
+
+ChargingPoint_to_Drone = sa.Table(
+    'charging_point_to_drone', Base.metadata,
+    sa.Column(
+        'charging_point_id', sa.Integer, sa.ForeignKey('charging_point.id')),
+    sa.Column('drone_id', sa.Integer, sa.ForeignKey('drone.id')),
+    sa.Column('id', sa.Integer, primary_key=True),
+)
+
+
+class DroneLoginData(Base):
+    __tablename__ = "drone_login_data"
+
+    drone_id = Column(Integer, primary_key=True)
+    login = Column(TEXT)
+    password = Column(TEXT)
+    refresh_token = Column(TEXT)
+    active_token = Column(TEXT)

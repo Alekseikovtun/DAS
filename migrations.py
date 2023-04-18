@@ -32,6 +32,28 @@ def create_migrations(message: Optional[str] = typer.Argument("new migrations"))
     ]
     alembic.config.main(argv=alembicArgs)
 
+@app.command(
+    help="DB values Initialization"
+)
+def init_values():
+    from crud.crud_session import connection_string_direct
+    import sqlalchemy as sa
+    from sqlalchemy.sql import text
+    engine = sa.create_engine(connection_string_direct)
+    conn = engine.connect()
+    # c = conn.cursor()
+    fd = open('Init_values.sql', 'r')
+    sqlFile = fd.read()
+    fd.close()
+
+    sqlCommands = sqlFile.split(';')
+
+    for command in sqlCommands:
+        try:
+            conn.execute(command)
+        except Exception as ex:
+            print(f'Command skipped. {command=}, {str(ex)=}')
+
 
 if __name__ == "__main__":
     # migrate()

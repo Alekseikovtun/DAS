@@ -18,19 +18,19 @@ if config1.config_file_name is not None:
 
 conn_url = f"mysql://{settings.MYSQL_USER}:{settings.MYSQL_PASSWORD}@{settings.MYSQL_HOST}:{settings.MYSQL_OUT_PORT}/{settings.MYSQL_DATABASE}"
 config1.set_main_option("sqlalchemy.url", conn_url)
-# print("\n\n", f"{conn_url=}", "\n")
+"""print("\n\n", f"{conn_url=}", "\n")
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-#from models.base import Base
+#from models.base import Base"""
 target_metadata = (Base.metadata)
-# target_metadata = Base.metadata
+""" target_metadata = Base.metadata
 # target_metadata = None
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
-# ... etc.
+# ... etc."""
 
 
 def run_migrations_offline() -> None:
@@ -65,7 +65,6 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    # print("/n/n/n/n", f"{config1.get_section(config1.config_ini_section)=}", "/n/n/n")
 
     connectable = engine_from_config(
         config1.get_section(config1.config_ini_section),
@@ -75,7 +74,9 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata, compare_type=True
+            connection=connection,
+            target_metadata=target_metadata,
+            compare_type=True
         )
 
         with context.begin_transaction():
