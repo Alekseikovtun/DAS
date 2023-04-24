@@ -5,18 +5,29 @@ from typing import List
 
 
 async def read_data_for_new_task(
+        login,
+        active_token,
         db,
+        db1,
         distance,
         weight,
         volume
 ) -> Task:
-    resp = await crud_station.station.read_datSa_for_new_task(
-        db,
-        distance,
-        weight,
-        volume
+    auth_resp = await crud_station.station.auth(
+        login,
+        active_token,
+        db
     )
-    return resp
+    if auth_resp["code"] == 200:
+        resp = await crud_station.station.read_data_for_new_task(
+            db1,
+            distance,
+            weight,
+            volume
+        )
+        return resp
+    else:
+        return auth_resp
 
 
 async def create_task_in_db(
@@ -97,18 +108,15 @@ async def registration(
     return resp
 
 
-async def token_check(active_token):
-    resp = await crud_station.station.token_check(active_token)
-    return resp
-
-
-async def auth(
+async def token_check(
+        db,
         login,
         refresh_token
 ):
-    resp = await crud_station.station.auth(
+    resp = await crud_station.station.token_check(
+        db,
         login,
-        refresh_token
+        refresh_token    
     )
     return resp
 

@@ -13,15 +13,23 @@ async def registration(
     )
 
 
-async def token_check(active_token):
-    return await db_service.token_check(active_token)
+async def token_check(
+        db,
+        login,
+        refresh_token
+):
+    return await db_service.token_check(
+        db,
+        login,
+        refresh_token
+    )
 
 
 async def auth(
         login,
-        refresh_token
+        active_token
 ):
     return await db_service.auth(
         login,
-        refresh_token
+        active_token
     )

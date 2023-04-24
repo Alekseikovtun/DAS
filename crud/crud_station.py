@@ -17,32 +17,28 @@ class Station():
 
         current_point_longitude = 55.110485
         current_point_latitude = 37.962350
-        
-        for row in all_new_tasks:
-            dist_to_task_point = await calculating_distance(current_point_longitude,row.gps_latitude , current_point_latitude, row.gps_longitude)
-            if dist_to_task_point <= distance:
-                found_new_task = row
-                found_new_task.task_status = "OFFERING"
+        try:
+            for row in all_new_tasks:
+                dist_to_task_point = await calculating_distance(current_point_longitude,row.gps_latitude , current_point_latitude, row.gps_longitude)
+                if dist_to_task_point <= distance:
+                    found_new_task = row
+                    found_new_task.task_status = "OFFERING"
 
-                # resp_log = await db.execute(func.max(AllLogs.id))
-                # last_log = resp_log.first()[0]
-                new_log: AllLogs = AllLogs(
-                    # id=last_log+1,
-                    log_type="info",
-                    context="The drone is offered a task"
-                )
-                db.add(new_log)
-                return found_new_task
-        
-        # resp_log = await db.execute(func.max(AllLogs.id))
-        # last_log = resp_log.first()[0]
-        new_log: AllLogs = AllLogs(
-            # id=last_log+1,
-            log_type="info",
-            context="There are no available tasks for the drone"
-        )
-        db.add(new_log)
-        return None  
+                    new_log: AllLogs = AllLogs(
+                        # id=last_log+1,
+                        log_type="info",
+                        context="The drone is offered a task"
+                    )
+                    db.add(new_log)
+                    return found_new_task
+        except:
+            new_log: AllLogs = AllLogs(
+                # id=last_log+1,
+                log_type="info",
+                context="There are no available tasks for the drone"
+            )
+            db.add(new_log)
+            return None  
 
     async def create_task_in_db(self, db: AsyncSession, add_gps_latitude, add_gps_longitude, add_priority, add_task_status, add_weight, add_volume, add_name):
         try:
@@ -130,28 +126,41 @@ class Station():
         }
         return dict
     
-    async def token_check(self, active_token):
-        active_token = active_token
-        code = 401
-        msg = "Token Expired"
+    async def token_check(self, db: AsyncSession, login, refresh_token):
+        q = select(DroneLoginData).filter(
+            DroneLoginData.login == login,
+            DroneLoginData.refresh_token == refresh_token
+        )
+        resp = await db.execute(q)
+        record: DroneLoginData = resp.first()[0]
+
         dict = {
-            "code": code,
-            "msg": msg
+            "active_token": record.active_token,
+            "code": 200,
+            "msg": "A new token has been received"
         }
         return dict
     
-    async def auth(self, login, refresh_token):
-        login = login
-        refresh_token = refresh_token
-        active_token = "some king of active_token"
-        code = 200
-        msg = "Ok"
-        dict = {
-            "active_token": active_token,
-            "code": code,
-            "msg": msg
-        }
-        return dict
+    async def auth(self,  login, active_token, db: AsyncSession):
+        q = select(DroneLoginData).filter(
+            DroneLoginData.login == login
+        )
+        resp = await db.execute(q)
+        record: DroneLoginData = resp.first()[0]
+
+
+        if record.active_token == active_token:
+            dict = {
+                "code": 200,
+                "msg": "Access is allowed"
+            }
+            return dict
+        else:
+            dict = {
+                "code": 401,
+                "msg": "Unauthorized"
+            }
+            return dict
 
     async def acc_rej_task(self, db: AsyncSession, drone_id, status_code, task_id):
         q = select(Task).filter(

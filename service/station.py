@@ -3,13 +3,19 @@ from service import db as db_serice
 
 
 async def read_data_for_new_task(
+        login,
+        active_token,
         db,
+        db1,
         distance,
         weight,
         volume
 ) -> Task:
     return await db_serice.read_data_for_new_task(
+        login,
+        active_token,
         db,
+        db1,
         distance,
         weight,
         volume
