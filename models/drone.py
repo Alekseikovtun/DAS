@@ -27,7 +27,6 @@ class Drone(Base):
     __tablename__ = "drone"
 
     id = Column(Integer, primary_key=True)
-    access_key = Column(VARCHAR(64))
     drone_status: DroneStatus = Column(VARCHAR(64), nullable=False)
     place_number = Column(Integer)
 

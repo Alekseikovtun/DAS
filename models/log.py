@@ -9,7 +9,7 @@ class Log(Base):
 
     id = Column(Integer, primary_key=True)
     created_at = Column(TIMESTAMP(timezone=True), default=func.now())
-    log_content = Column(TEXT)
+    log_content = Column(TEXT)  
 
 
 class DroneLog(Base):

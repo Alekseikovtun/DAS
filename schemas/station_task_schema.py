@@ -14,7 +14,6 @@ class Cargo(BaseModel):
 class Task(BaseModel):
     gps_latitude: float
     gps_longitude: float
-    priority: str
     task_status: str
     code: Optional[int]
     msg: Optional[str]

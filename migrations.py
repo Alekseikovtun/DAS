@@ -12,7 +12,7 @@ app = typer.Typer(add_completion=False)
 )
 def migrate():
     typer.echo("Migrating")
-    import alembic.config #вот тут я б разобрался
+    import alembic.config
     alembicArgs = [
         '--raiseerr',
         'upgrade', 'head',
@@ -56,6 +56,4 @@ def init_values():
 
 
 if __name__ == "__main__":
-    # migrate()
-    # create_migrations()
     app()

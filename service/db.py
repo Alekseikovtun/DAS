@@ -2,6 +2,7 @@ from crud import crud_drone, crud_station, crud_admin
 from models.station import Task
 from models.drone import Drone as ModelDrone
 from typing import List
+from authorization import auth
 
 
 async def read_data_for_new_task(
@@ -13,7 +14,7 @@ async def read_data_for_new_task(
         weight,
         volume
 ) -> Task:
-    auth_resp = await crud_station.station.auth(
+    auth_resp = await auth.auth.authorization(
         login,
         active_token,
         db
@@ -34,7 +35,6 @@ async def create_task_in_db(
         db,
         add_gps_latitude,
         add_gps_longitude,
-        add_priority,
         add_task_status,
         add_weight,
         add_volume,
@@ -44,7 +44,6 @@ async def create_task_in_db(
         db,
         add_gps_latitude,
         add_gps_longitude,
-        add_priority,
         add_task_status,
         add_weight,
         add_volume,
@@ -100,7 +99,7 @@ async def registration(
         login,
         password
 ):
-    resp = await crud_station.station.registration(
+    resp = await auth.auth.registration(
         db,
         login,
         password
@@ -109,12 +108,10 @@ async def registration(
 
 
 async def token_check(
-        db,
         login,
         refresh_token
 ):
-    resp = await crud_station.station.token_check(
-        db,
+    resp = await auth.auth.token_check(
         login,
         refresh_token    
     )

@@ -59,7 +59,7 @@ async def add_task_to_db(
     db: AsyncSession = Depends(get_db)
 ) -> Task:
     try:
-        new_task = await station.add_task_to_db(db, task.gps_latitude, task.gps_longitude, task.priority, task.task_status, cargo.weight, cargo.volume, cargo.name)
+        new_task = await station.add_task_to_db(db, task.gps_latitude, task.gps_longitude, task.task_status, cargo.weight, cargo.volume, cargo.name)
         result: Task = Task.from_orm(new_task)
         return result
     except:

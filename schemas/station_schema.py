@@ -14,7 +14,7 @@ class TaskBase(BaseModel):
 class NewTaskFullReturn(BaseModel):
     code: Optional[int]
     msg: Optional[str]
-    active_token: Optional[str]
+    # active_token: Optional[str]
     item_geojson_type: Optional[str]
     item_geojson_geometry_type: Optional[str]
     item_order_id: Optional[int]

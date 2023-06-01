@@ -14,12 +14,10 @@ async def registration(
 
 
 async def token_check(
-        db,
         login,
         refresh_token
 ):
     return await db_service.token_check(
-        db,
         login,
         refresh_token
     )
@@ -29,7 +27,8 @@ async def auth(
         login,
         active_token
 ):
-    return await db_service.auth(
-        login,
-        active_token
-    )
+    pass
+    # return await db_service.auth(
+    #     login,
+    #     active_token
+    # )

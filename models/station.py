@@ -1,7 +1,7 @@
 from datetime import datetime
 import sqlalchemy as sa
 from sqlalchemy import (
-    func, Integer, TIMESTAMP, Column, Float, ForeignKey, VARCHAR, TEXT)
+    func, Integer, TIMESTAMP, Column, Float, ForeignKey, VARCHAR, TEXT,)
 from models.base import Base
 from models.drone import Drone
 from sqlalchemy.orm import relationship
@@ -24,14 +24,13 @@ class Flight(Base):
     started_at = Column(TIMESTAMP(timezone=True), default=func.now())
     finished_at: datetime = Column(TIMESTAMP(timezone=True))
 
-    tasks = relationship('Task', backref='flight')
     id_task = Column(Integer, ForeignKey('task.id'))
 
 
 class Cargo(Base):
     __tablename__ = "cargo"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     weight = Column(Float)
     volume = Column(Float)
     name = Column(VARCHAR(64))
@@ -51,7 +50,6 @@ class Task(Base):
     )
     gps_latitude = Column(Float)
     gps_longitude = Column(Float)
-    priority = Column(VARCHAR(64))
     task_status: TaskStatus = Column(VARCHAR(64), nullable=False)
     completed_at = Column(TIMESTAMP(timezone=True))
 
@@ -77,13 +75,3 @@ ChargingPoint_to_Drone = sa.Table(
     sa.Column('drone_id', sa.Integer, sa.ForeignKey('drone.id')),
     sa.Column('id', sa.Integer, primary_key=True),
 )
-
-
-class DroneLoginData(Base):
-    __tablename__ = "drone_login_data"
-
-    drone_id = Column(Integer, primary_key=True)
-    login = Column(TEXT)
-    password = Column(TEXT)
-    refresh_token = Column(TEXT)
-    active_token = Column(TEXT)

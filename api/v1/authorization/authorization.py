@@ -25,10 +25,9 @@ async def registration(
 @router.post('/test_token_expired/', response_model=TestOutputInfo)
 async def token_check(
     test_token_expired: TestInputInfo,
-    db: AsyncSession = Depends(get_db),
 ) -> TestOutputInfo:
     try:
-        server_response: TestOutputInfo = await authorization.token_check(db, test_token_expired.login, test_token_expired.refresh_token)
+        server_response: TestOutputInfo = await authorization.token_check(test_token_expired.login, test_token_expired.refresh_token)
         return server_response
     except:
         except_response = {"code": 415, "msg": "Unsupported Media Type"}
