@@ -35,7 +35,6 @@ class Dronee():
             last_drone_place = resp_drone_place.first()[0]
             new_drone: Drone = Drone(
                 # id=last_drone + 1,
-                access_key="something",
                 drone_status="FREE",
                 place_number=last_drone_place + 1,
                 # id_drone_type=add_id_drone_type
@@ -72,7 +71,6 @@ class Dronee():
 
             new_drone = Drone(
                 # id=1,
-                access_key="something",
                 drone_status="FREE",
                 place_number=1,
                 # id_drone_type=add_id_drone_type,

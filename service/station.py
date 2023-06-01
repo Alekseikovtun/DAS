@@ -3,13 +3,19 @@ from service import db as db_serice
 
 
 async def read_data_for_new_task(
+        login,
+        active_token,
         db,
+        db1,
         distance,
         weight,
         volume
 ) -> Task:
     return await db_serice.read_data_for_new_task(
+        login,
+        active_token,
         db,
+        db1,
         distance,
         weight,
         volume
@@ -20,7 +26,6 @@ async def add_task_to_db(
         db,
         add_gps_latitude,
         add_gps_longitude,
-        add_priority,
         add_task_status,
         add_weight,
         add_volume,
@@ -29,7 +34,6 @@ async def add_task_to_db(
     return await db_serice.create_task_in_db(
         db, add_gps_latitude,
         add_gps_longitude,
-        add_priority,
         add_task_status,
         add_weight,
         add_volume,

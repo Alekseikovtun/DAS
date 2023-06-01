@@ -12,7 +12,6 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
-      #DB_DATA: "/var/lib/mysql"
     volumes:
       - ${DB_DATA}:/var/lib/msql
     healthcheck:

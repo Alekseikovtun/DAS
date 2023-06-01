@@ -3,7 +3,6 @@ from typing import Optional
 
 
 class Drone(BaseModel):
-    access_key: str
     drone_status: str
     place_number: int
     id_drone_type: int

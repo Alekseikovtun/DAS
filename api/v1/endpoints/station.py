@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 from service import station
 from schemas.station_schema import TaskBase, NewTaskFullReturn
 from schemas.station_task_schema import Task, Cargo
+from schemas.authorization_schema import LogInInputInfo
 from models.station import Task as ModelTask
 from sqlalchemy.ext.asyncio import AsyncSession
 from crud import get_db
@@ -15,11 +16,14 @@ async def read_data_for_new_task(
     distance: float,
     weight: float, 
     volume: float,
+    login: str,
+    active_token: str,
     db: AsyncSession = Depends(get_db)
 ) -> NewTaskFullReturn:
     try:
+        db1 = db
         input_dict = dict(NewTaskFullReturn(input_battery = battery, input_distance = distance, input_weigth = weight, input_volume = volume))
-        task_db: ModelTask = await station.read_data_for_new_task(db, distance, weight, volume)
+        task_db: ModelTask = await station.read_data_for_new_task(login, active_token, db, db1, distance, weight, volume)
         try:
             task: TaskBase = TaskBase.from_orm(task_db)
             input_dict["code"] = 200
@@ -31,9 +35,16 @@ async def read_data_for_new_task(
             input_dict["item_geojson_properties_name"] = "Moscow"
             input_dict["total"] = 1
         except:
-            input_dict["code"] = 200
-            input_dict["msg"] = "OK"
-            input_dict["total"] = 0
+            try:
+                if task_db["code"] == 401:
+                    input_dict["code"] = 401
+                    input_dict["msg"] = "Unauthorized"
+                    input_dict["total"] = 0
+            except:
+                if task_db == None:
+                    input_dict["code"] = 200
+                    input_dict["msg"] = "OK"
+                    input_dict["total"] = 0
         result: NewTaskFullReturn = NewTaskFullReturn(**input_dict)
         return result
     except:
@@ -48,7 +59,7 @@ async def add_task_to_db(
     db: AsyncSession = Depends(get_db)
 ) -> Task:
     try:
-        new_task = await station.add_task_to_db(db, task.gps_latitude, task.gps_longitude, task.priority, task.task_status, cargo.weight, cargo.volume, cargo.name)
+        new_task = await station.add_task_to_db(db, task.gps_latitude, task.gps_longitude, task.task_status, cargo.weight, cargo.volume, cargo.name)
         result: Task = Task.from_orm(new_task)
         return result
     except:

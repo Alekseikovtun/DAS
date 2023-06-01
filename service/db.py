@@ -2,28 +2,39 @@ from crud import crud_drone, crud_station, crud_admin
 from models.station import Task
 from models.drone import Drone as ModelDrone
 from typing import List
+from authorization import auth
 
 
 async def read_data_for_new_task(
+        login,
+        active_token,
         db,
+        db1,
         distance,
         weight,
         volume
 ) -> Task:
-    resp = await crud_station.station.read_datSa_for_new_task(
-        db,
-        distance,
-        weight,
-        volume
+    auth_resp = await auth.auth.authorization(
+        login,
+        active_token,
+        db
     )
-    return resp
+    if auth_resp["code"] == 200:
+        resp = await crud_station.station.read_data_for_new_task(
+            db1,
+            distance,
+            weight,
+            volume
+        )
+        return resp
+    else:
+        return auth_resp
 
 
 async def create_task_in_db(
         db,
         add_gps_latitude,
         add_gps_longitude,
-        add_priority,
         add_task_status,
         add_weight,
         add_volume,
@@ -33,7 +44,6 @@ async def create_task_in_db(
         db,
         add_gps_latitude,
         add_gps_longitude,
-        add_priority,
         add_task_status,
         add_weight,
         add_volume,
@@ -89,7 +99,7 @@ async def registration(
         login,
         password
 ):
-    resp = await crud_station.station.registration(
+    resp = await auth.auth.registration(
         db,
         login,
         password
@@ -97,18 +107,13 @@ async def registration(
     return resp
 
 
-async def token_check(active_token):
-    resp = await crud_station.station.token_check(active_token)
-    return resp
-
-
-async def auth(
+async def token_check(
         login,
         refresh_token
 ):
-    resp = await crud_station.station.auth(
+    resp = await auth.auth.token_check(
         login,
-        refresh_token
+        refresh_token    
     )
     return resp
 

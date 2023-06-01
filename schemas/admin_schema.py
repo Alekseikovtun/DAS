@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime
+
 
 
 class TaskStatus(BaseModel):
@@ -10,9 +12,8 @@ class MainTaskInfo(TaskStatus):
     id: int
     gps_latitude: float
     gps_longitude: float
-    priority: str
-    code: Optional[int]
-    msg: Optional[str]
+    created_at: datetime
+    completed_at: Optional[datetime]
 
     class Config:
         orm_mode = True

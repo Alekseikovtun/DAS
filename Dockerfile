@@ -1,5 +1,5 @@
 # Dockerfile, Image, Container
-FROM python:3.8.10-slim
+FROM python:3.8.10
 
 WORKDIR /src
 
